@@ -1,0 +1,98 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.App table.columntable {
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  border-bottom: 1px solid black;
+  
+}
+.App table.columntable th {
+  border: 1px solid black;
+}
+.App table.columntable td {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  padding: 1em;
+  vertical-align: top;
+}
+.App div.columnset {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: top;
+  height: 100%;
+  padding: 0.5em;
+}
+.App div.columnset div.column {
+  padding: 1em;
+  padding-top: 1em;
+  margin-right: 0.3em;
+  margin-left: 0.3em;
+  background-color: rgb(230, 230, 230);
+  border: 2px solid black;
+}
+
+.App div.preamble {
+  margin-bottom: 2em;
+  display: flex;
+  padding: 1.5em;
+}
+.App div.preamble label {
+  margin: 0px;
+  text-align: center;
+}
+.App div.preamble .form-control {
+  margin-top: 4px;
+  display: inline-block;
+  margin-left: 0.5em;
+  border: 2px solid red;
+  background: white;
+  width: 10em;
+  padding: 6px;
+  font-weight: bold;
+  font-size: 100%;
+}
+.App div.preamble .data_selector {
+  margin-top: 2px;
+  margin-left: 0.5em;
+  width: 20em;
+  display: inline-block;
+}
+.App label {
+  font-size: 110%;
+  font-weight: bold;
+}
+
+.App div.columnset label input {
+  font-size: 100%;
+  width: 6em;
+  margin-left: 0.5em;
+}
+.App input {
+}
+
+.App div.columnset table input {
+  width: 5em;
+  font-size: 80%;
+  background-color: white;
+}
+
+.App div.columnset table input[type="checkbox"] {
+  width: 1em;
+  outline: 1px solid black;
+}
+.App div.columnset table input[type="checkbox"][disabled] {
+  outline: 1px dashed grey;
+}
+
+.App table.fieldTable {
+  border-collapse: collapse;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-bottom: 1px solid black;
+}
