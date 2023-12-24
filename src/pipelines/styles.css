@@ -9,12 +9,16 @@
   min-height: 12em;
   overflow: hidden;
   padding: 0.2em;
-  background: rgb(200, 200, 200);
+  background: rgb(230, 230, 230);
   text-align: left;
 }
 
 .Card div.Editable {
   font-size: 80%;
+}
+
+.Card div.Editable span.caption {
+  font-weight: bold;
 }
 
 .Card div.notEditable {
@@ -67,4 +71,9 @@ div.Columns div.columnContainer div.column {
   border: 1px solid red;
   min-width: 20em;
   flex-direction: column;
+}
+
+.cardModalTitle div {
+  display: inline-block;
+  margin-right: 1em;
 }

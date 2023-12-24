@@ -2,10 +2,11 @@ import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Card from "react-bootstrap/Card";
 //import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
-export default function Card(props) {
+export default function PartCard(props) {
   const [editor, setEditor] = useState(false);
   const [modal, setModal] = useState(false);
   console.log(setEditor);
@@ -29,16 +30,36 @@ export default function Card(props) {
   };
   return (
     <>
-      <div className="Card" onDoubleClick={() => setModal(true)}>
-        {Object.entries(props.data).map(([name, c]) => {
-          return c.display_on_card || c.editable ? (
-            <div key={name} className={c.editable ? "Editable" : "notEditable"}>
-              <span className="caption">{c.caption}:</span>{" "}
-              <span className="value">{c.value}</span>
-            </div>
-          ) : null;
-        })}
-      </div>
+      <Card className="Card">
+        <Card.Body onDoubleClick={() => setModal(true)}>
+          <Card.Title>
+            {Object.entries(props.data).map(([name, c]) => {
+              return c.display_on_card ? (
+                <div
+                  key={name}
+                  className={c.editable ? "Editable" : "notEditable"}
+                >
+                  <span className="caption">{c.caption}:</span>{" "}
+                  <span className="value">{c.value}</span>
+                </div>
+              ) : null;
+            })}
+          </Card.Title>
+          <Card.Text>
+            {Object.entries(props.data).map(([name, c]) => {
+              return !c.display_on_card && c.editable ? (
+                <div
+                  key={name}
+                  className={c.editable ? "Editable" : "notEditable"}
+                >
+                  <span className="caption">{c.caption}:</span>{" "}
+                  <span className="value">{c.value}</span>
+                </div>
+              ) : null;
+            })}
+          </Card.Text>
+        </Card.Body>
+      </Card>
       <CardEditor show={editor} />
       <CardModal
         show={modal}
@@ -60,10 +81,10 @@ function CardEditor(props) {
 
 function CardModal(props) {
   return (
-    <div className="modal show">
+    <div className="modal show cardModal">
       <Modal show={props.show}>
         <Modal.Header>
-          <Modal.Title>
+          <Modal.Title className="cardModalTitle">
             {Object.entries(props.data).map(([name, c]) => {
               return c.display_on_card ? (
                 <div key={name}>

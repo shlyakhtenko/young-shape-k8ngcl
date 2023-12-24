@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { get_card_data } from "./card_data";
 import { ReactSortable } from "react-sortablejs";
-import Card from "./Card";
+import PartCard from "./Card";
 
 export default function Pipeline() {
   let params = useParams();
@@ -44,7 +44,7 @@ export default function Pipeline() {
                     console.log(column_cards[c.name]);
                   }
                   return (
-                    <Card
+                    <PartCard
                       key={cc.card_id}
                       data={cc.card_data}
                       id={cc.card_id}
