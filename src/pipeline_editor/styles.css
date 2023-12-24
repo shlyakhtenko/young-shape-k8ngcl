@@ -8,14 +8,16 @@
   margin-left: auto;
   margin-right: auto;
   height: 100%;
-  border-bottom: 1px solid black;
+  border: none;
 }
 .App table.columntable th {
-  border: 1px solid black;
+  border: none;
+  padding: 2em;
+  border: 1px solid grey;
 }
 .App table.columntable td {
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  border: 1px solid grey;
+
   padding: 1em;
   vertical-align: top;
 }
@@ -25,24 +27,26 @@
   margin-right: auto;
   vertical-align: top;
   height: 100%;
-  padding: 0.5em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 .App div.columnset div.column {
-  padding: 1em;
+  padding: 0em;
   padding-top: 1em;
   margin-right: 0.3em;
   margin-left: 0.3em;
   background-color: rgb(230, 230, 230);
   border: 2px solid black;
+  padding-bottom: 1em;
 }
 
 .App div.preamble {
   margin-bottom: 2em;
-  display: flex;
+  display: block;
   padding: 1.5em;
 }
 .App div.preamble label {
-  margin: 0px;
+  margin: 0.5em;
   text-align: center;
 }
 .App label.pipelineName input {
@@ -64,6 +68,26 @@
 .App label {
   font-size: 110%;
   font-weight: bold;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.App div.columnset table {
+  border-collapse: collapse;
+  width: 100%;
+  padding: 0px;
+}
+
+.App div.columnset table td {
+  border: none;
+  text-align: left;
+  padding: 2px;
+  padding-left: 5px;
+}
+.App div.columnset table th {
+  border: none;
+  text-align: left;
+  padding: 2px;
 }
 
 .App div.columnset label input {
@@ -92,5 +116,5 @@
   border-collapse: collapse;
   margin-top: 1em;
   margin-bottom: 1em;
-  border-bottom: 1px solid black;
+  border: none;
 }

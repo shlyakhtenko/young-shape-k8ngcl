@@ -5,9 +5,11 @@ import {
   compute_inputs,
   compute_outputs,
 } from "./column_helpers.js";
+
+import get_pipeline_data from "./available_pipelines.js";
 import Datacolumn from "./Datacolumn.js";
 import get_data_sources from "./available_queries.js";
-import Select from "react-select";
+//import Select from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useParams } from "react-router-dom";
@@ -15,31 +17,58 @@ import { useParams } from "react-router-dom";
 
 export default function PipelineEditor(props) {
   let target_pipeline = null;
+  let pipeline_data = null;
   if (props.pipeline != "new") {
     let params = useParams();
     target_pipeline = params.pipelineName;
-  } else {
-    target_pipeline = "Pipeline";
+    pipeline_data = get_pipeline_data().find((p) => p.name == target_pipeline);
   }
 
-  const [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
-  const [pipeline, setPipeline] = useState(target_pipeline);
+  if (pipeline_data == null) {
+    target_pipeline = "Pipeline";
 
-  const data_sources = get_data_sources();
-  const [data_source, setDataSource] = useState(data_sources[0]);
-  const [query, setQuery] = useState(data_source.available_queries[0]);
-  const [inputs, setInputs] = useState(compute_inputs(query));
-  //const [wips, setWIPS] = useState([compute_wips(query, 'wip1','Work in Progress')]);
-  const [wips, setWIPS] = useState([]);
-  const [outputs, setOutputs] = useState([
-    // compute_outputs(query, wips, "output", "Output Column"),
-  ]);
+    var [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
+    var [pipeline, setPipeline] = useState(target_pipeline);
 
-  const [selectOptions, setSelectOptions] = useState(
-    data_source.available_queries.map((q) => {
-      return { value: q.name, label: q.caption };
-    }),
-  );
+    var data_sources = get_data_sources();
+    var [data_source, setDataSource] = useState(data_sources[0]);
+    var [query, setQuery] = useState(data_source.available_queries[0]);
+    var [inputs, setInputs] = useState(compute_inputs(query));
+    //const [wips, setWIPS] = useState([compute_wips(query, 'wip1','Work in Progress')]);
+    var [wips, setWIPS] = useState([]);
+    var [outputs, setOutputs] = useState([
+      // compute_outputs(query, wips, "output", "Output Column"),
+    ]);
+
+    var [selectOptions, setSelectOptions] = useState(
+      data_source.available_queries.map((q) => {
+        return { value: q.name, label: q.caption };
+      }),
+    );
+  } else {
+    [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
+    [pipeline, setPipeline] = useState(pipeline_data.caption);
+
+    data_sources = get_data_sources();
+    [data_source, setDataSource] = useState(
+      data_sources.find((x) => x.name == pipeline_data.data_source),
+    );
+    [query, setQuery] = useState(
+      data_source.available_queries.find(
+        (x) => x.name == pipeline_data.inputs[0].query,
+      ),
+    );
+    [inputs, setInputs] = useState(pipeline_data.inputs);
+    //const [wips, setWIPS] = useState([compute_wips(query, 'wip1','Work in Progress')]);
+    [wips, setWIPS] = useState(pipeline_data.wips);
+    [outputs, setOutputs] = useState(pipeline_data.outputs);
+
+    [selectOptions, setSelectOptions] = useState(
+      data_source.available_queries.map((q) => {
+        return { value: q.name, label: q.caption };
+      }),
+    );
+  }
 
   return (
     <div className="App">
@@ -51,46 +80,59 @@ export default function PipelineEditor(props) {
           value={pipeline}
           onChange={(e) => {
             setPipeline(e.target.value);
-            setPipelineName(e.target.value.split(" ").join("_"));
+            if (pipelineName == "Pipeline") {
+              setPipelineName(e.target.value.split(" ").join("_"));
+            }
           }}
         />
       </label>
       <div className="preamble">
-        <hr />
         <label>
           Datasource:
-          <Select
+          <Form.Select
             className="data_selector"
-            defaultValue={{
-              value: data_source.name,
-              label: data_source.caption,
-            }}
-            options={data_sources.map((ds) => {
-              return { value: ds.name, label: ds.caption };
-            })}
-            onChange={(val) => {
+            defaultValue={data_source.name}
+            onChange={(ev) => {
+              let val = ev.target.value;
               let new_data_source = data_sources.filter((ds) => {
-                return ds.name == val.value;
+                return ds.name == val;
               })[0];
               setDataSource(new_data_source);
+              setInputs(compute_inputs(new_data_source.available_queries[0]));
+              setWIPS([]);
+              setOutputs([]);
               setSelectOptions(
                 new_data_source.available_queries.map((q) => {
                   return { value: q.name, label: q.caption };
                 }),
               );
             }}
-          ></Select>
+          >
+            {data_sources.map((ds) => {
+              return (
+                <option key={ds.name} value={ds.name}>
+                  {ds.caption}
+                </option>
+              );
+            })}
+          </Form.Select>
         </label>
-        <hr />
         <label>
           Query:
-          <Select
+          <Form.Select
             className="data_selector"
-            value={selectOptions[0]}
-            options={selectOptions}
-            onChange={(val) => {
+            //value={selectOptions[0]}
+            defaultValue={
+              //(pipeline_data.inputs[0].query)
+              query.name
+              /*label: data_source.available_queries.find(
+                (q) => q.name == pipeline_data.inputs[0].query,
+              ).caption,*/
+            }
+            onChange={(e) => {
+              let val = e.target.value;
               let newquery = data_source.available_queries.filter((qn) => {
-                return qn.name == val.value;
+                return qn.name == val;
               })[0];
               setQuery(newquery);
               setInputs(compute_inputs(newquery));
@@ -99,7 +141,16 @@ export default function PipelineEditor(props) {
                 //compute_outputs(newquery, [], "output", "Output Column"),
               ]);
             }}
-          ></Select>
+          >
+            {console.log(query)}
+            {selectOptions.map((q) => {
+              return (
+                <option key={q.value} value={q.value}>
+                  {q.label}
+                </option>
+              );
+            })}
+          </Form.Select>
         </label>
       </div>
       <table className="columntable">
@@ -208,13 +259,14 @@ export default function PipelineEditor(props) {
       <Button
         onClick={() => {
           let save_data = {
+            data_source: data_source.name,
             name: pipelineName,
             caption: pipeline,
             inputs: inputs,
             wips: wips,
             outputs: outputs,
           };
-          console.log(save_data);
+          console.log(JSON.stringify(save_data));
         }}
       >
         Save
