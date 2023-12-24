@@ -1,4 +1,5 @@
 export function get_card_data(pipeline, program_code) {
+  console.log(pipeline, program_code);
   let card_data = {
     cards: [
       {
@@ -85,6 +86,48 @@ export function get_card_data(pipeline, program_code) {
           },
         },
         target_column: "finished",
+      },
+      {
+        card_id: 3,
+        card_data: {
+          userid: { value: 23425, editable: false, caption: "User ID" },
+          firstname: {
+            value: "John",
+            editable: false,
+            caption: "First Name",
+            display_on_card: true,
+          },
+          lastname: {
+            value: "Doem",
+            editable: false,
+            caption: "Last Name",
+            display_on_card: true,
+          },
+          email: {
+            value: "john.doe@asdfasdf",
+            editable: false,
+            caption: "E-mail",
+          },
+          comment: {
+            value: "Jonh's comments",
+            editable: true,
+            caption: "Comments",
+            edit_type: "textarea",
+          },
+          title: {
+            value: "A title on binaries",
+            editable: true,
+            caption: "Title",
+            edit_type: "default",
+          },
+          abstract: {
+            value: "Totally cool abstract on binaries",
+            editable: true,
+            caption: "Abstract",
+            edit_type: "textarea",
+          },
+        },
+        target_column: "in_progress",
       },
     ],
     columns: [

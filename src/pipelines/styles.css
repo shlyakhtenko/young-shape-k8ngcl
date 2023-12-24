@@ -1,6 +1,8 @@
 .Card {
   border: 2px solid black;
   margin: 1em;
+  margin-top: 0em;
+  margin-bottom: 1em;
   width: 18em;
   min-width: 18em;
   height: 12em;
@@ -15,6 +17,15 @@
   font-size: 80%;
 }
 
+.Card div.notEditable {
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 1em;
+}
+.Card div.notEditable span.caption {
+  display: none;
+}
+
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -25,7 +36,7 @@ div.Pipeline {
   min-width: 100%;
 }
 div.Columns {
-  display: flex;
+  display: table-row;
   width: 100%;
   min-width: 100%;
   text-align: center;
@@ -34,8 +45,7 @@ div.Columns {
 
 div.Columns div.columnContainer {
   padding: 2em;
-  display: block;
-  margin: auto;
+  display: table-cell;
   border-collapse: collapse;
   border-left: 1px solid grey;
   height: 100%;
@@ -51,7 +61,10 @@ div.Columns div.columnContainer h2 {
 
 div.Columns div.columnContainer div.column {
   height: 100%;
-  min-height: 100%;
+  min-height: 50em;
   display: flex;
   overflow-y: scroll;
+  border: 1px solid red;
+  min-width: 20em;
+  flex-direction: column;
 }

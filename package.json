@@ -9,6 +9,7 @@
   "homepage": "/malebolge/",
   "main": "src/index.js",
   "dependencies": {
+    "@types/sortablejs": "^1.15.7",
     "bootstrap": "^5.3.2",
     "loader-utils": "^3.2.1",
     "react": "^18.2.0",
@@ -16,7 +17,9 @@
     "react-dom": "18.2.0",
     "react-router-dom": "^6.20.0",
     "react-scripts": "^5.0.1",
-    "react-select": "^5.8.0"
+    "react-select": "^5.8.0",
+    "react-sortablejs": "^6.1.4",
+    "sortablejs": "^1.15.1"
   },
   "devDependencies": {
     "@babel/runtime": "^7.13.8",
