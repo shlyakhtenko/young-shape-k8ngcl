@@ -43,11 +43,50 @@ export function get_card_data(pipeline, program_code) {
         },
         target_column: "finished",
       },
-     
+      {
+        card_id: 1,
+        card_data: {
+          userid: { value: 123123, editable: false, caption: "User ID" },
+          firstname: {
+            value: "Jane",
+            editable: false,
+            caption: "First Name",
+            display_on_card: true,
+          },
+          lastname: {
+            value: "Doe",
+            editable: false,
+            caption: "Last Name",
+            display_on_card: true,
+          },
+          email: {
+            value: "jane.doe@asdfasdf",
+            editable: false,
+            caption: "E-mail",
+          },
+          comment: {
+            value: null,
+            editable: true,
+            caption: "Comments",
+            edit_type: "textarea",
+          },
+          title: {
+            value: "Large N-Body Treatment of Binaries",
+            editable: true,
+            caption: "Title",
+            edit_type: "default",
+          },
+          abstract: {
+            value:
+              "Some text for abstract on large n-body treatment of Binaries",
+            editable: true,
+            caption: "Abstract",
+            edit_type: "textarea",
+          },
+        },
+        target_column: "finished",
+      },
     ],
-    inputs: [
-      {name: "speakers", caption: "Speakers", fields: [] }
-    ]
     columns: [
       { name: "speakers", pull: true, put: true, caption: "Speakers" },
       {

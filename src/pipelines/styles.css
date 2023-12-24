@@ -1,0 +1,57 @@
+.Card {
+  border: 2px solid black;
+  margin: 1em;
+  width: 18em;
+  min-width: 18em;
+  height: 12em;
+  min-height: 12em;
+  overflow: hidden;
+  padding: 0.2em;
+  background: rgb(200, 200, 200);
+  text-align: left;
+}
+
+.Card div.Editable {
+  font-size: 80%;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+div.Pipeline {
+  width: 100%;
+  min-width: 100%;
+}
+div.Columns {
+  display: flex;
+  width: 100%;
+  min-width: 100%;
+  text-align: center;
+  vertical-align: top;
+}
+
+div.Columns div.columnContainer {
+  padding: 2em;
+  display: block;
+  margin: auto;
+  border-collapse: collapse;
+  border-left: 1px solid grey;
+  height: 100%;
+  min-height: 100%;
+}
+div.Columns div.columnContainer:first-child {
+  border-left: none;
+}
+
+div.Columns div.columnContainer h2 {
+  text-align: center;
+}
+
+div.Columns div.columnContainer div.column {
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  overflow-y: scroll;
+}

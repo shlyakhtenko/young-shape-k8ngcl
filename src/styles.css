@@ -1,15 +1,9 @@
-.App {
-  font-family: sans-serif;
-  text-align: center;
-}
-
 .App table.columntable {
   border-collapse: collapse;
   margin-left: auto;
   margin-right: auto;
   height: 100%;
   border-bottom: 1px solid black;
-  
 }
 .App table.columntable th {
   border: 1px solid black;
