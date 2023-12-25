@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { get_card_data } from "./card_data";
 import { ReactSortable } from "react-sortablejs";
+import { Button } from "react-bootstrap";
 import PartCard from "./Card";
 
 export default function Pipeline() {
@@ -22,6 +23,13 @@ export default function Pipeline() {
     <div className="Pipeline">
       <h1>
         Pipeline: {params.pipelineName}, Workhshop: {params.programCode}
+        <Button
+          onClick={() => {
+            console.log("Saving", column_cards["in_progress"]);
+          }}
+        >
+          Save
+        </Button>{" "}
       </h1>
       <div className="Columns">
         {columns.map((c) => {
@@ -37,8 +45,7 @@ export default function Pipeline() {
                   put: c.put,
                 }}
                 list={column_cards[c.name]}
-                setList={setColumn_cards[c.name]}
-                setList1={(newlist, callback = () => {}) => {
+                setList={(newlist, callback = () => {}) => {
                   console.log(
                     "Sortable setlist newlist =",
                     newlist,
