@@ -9,8 +9,8 @@ import PartCard from "./Card";
 export default function Pipeline() {
   let params = useParams();
   let card_data = get_card_data(params.pipelineName, params.programCode);
-  var column_cards = [];
-  var setColumn_cards = [];
+  var column_cards = {};
+  var setColumn_cards = {};
   let columns = card_data.columns;
   columns.forEach((c) => {
     [column_cards[c.name], setColumn_cards[c.name]] = useState(
@@ -25,7 +25,7 @@ export default function Pipeline() {
         Pipeline: {params.pipelineName}, Workhshop: {params.programCode}
         <Button
           onClick={() => {
-            console.log("Saving", column_cards["in_progress"]);
+            console.log("Saving", column_cards);
           }}
         >
           Save
@@ -84,7 +84,29 @@ export default function Pipeline() {
                         data={ccc.card_data}
                         card_id={ccc.card_id}
                         id={ccc.card_id}
+                        update_card_data_function={
+                          (new_card_data)=>{
+                            setColumn_cards[c.name](
+                              column_cards[c.name].map((card) => {
+                                return card.card_id != ccc.card_id
+                                  ? card
+                                  : {
+                                      ...card,
+                                      card_data: new_card_data
+                                    };
+                              }),
+                            );
+                          }
+                        }
                         field_update_function={(field_name, field_value) => {
+                          console.log(
+                            "cardid",
+                            ccc.card_id,
+                            "updateing field",
+                            field_name,
+                            " to value ",
+                            field_value,
+                          );
                           setColumn_cards[c.name](
                             column_cards[c.name].map((card) => {
                               return card.card_id != ccc.card_id

@@ -53,24 +53,33 @@ export default function PartCard(props) {
         setter={setModal}
         data={props.data}
         card_id={props.card_id}
-        save_function={props.field_update_function}
+        update_card_data_function={props.update_card_data_function}
       />
     </>
   );
 }
 
 function CardEditor(props) {
-  if (!props.show) {
-    return null;
-  }
-  return <div>CardEditor</div>;
+  return (
+    <div>
+      <Modal show={props.show}>CardEditor</Modal>
+    </div>
+  );
 }
 
 function CardModal(props) {
+  var [field_values, setFieldValues] = useState(props.data);
+
   return (
     <div className="modal show cardModal">
-      <Modal show={props.show}>
-        <Modal.Header>
+      <Modal
+        show={props.show}
+        onHide={() => {
+          props.setter(false);
+          setFieldValues(props.data);
+        }}
+      >
+        <Modal.Header closeButton>
           <Modal.Title className="cardModalTitle">
             {Object.entries(props.data).map(([name, c]) => {
               return c.display_on_card ? (
@@ -85,7 +94,7 @@ function CardModal(props) {
         </Modal.Header>
 
         <Modal.Body>
-          {Object.entries(props.data).map(([name, c]) => {
+          {Object.entries(field_values).map(([name, c]) => {
             return c.editable ? (
               <div key={name}>
                 <FloatingLabel
@@ -97,7 +106,18 @@ function CardModal(props) {
                     as={c.edit_type == "textarea" ? "textarea" : "input"}
                     aria-label={c.caption}
                     value={c.value}
-                    onChange={(e) => props.save_function(name, e.target.value)}
+                    onChange={
+                      (e) => {
+                        setFieldValues({
+                          ...field_values,
+                          [name]: {
+                            ...field_values[name],
+                            value: e.target.value,
+                          },
+                        });
+                      }
+                      //(e) => props.save_function(name, e.target.value)
+                    }
                   />
                 </FloatingLabel>
               </div>
@@ -108,8 +128,27 @@ function CardModal(props) {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" onClick={() => props.setter(false)}>
-            Close
+          <Button
+            variant="primary"
+            onClick={() => {
+              props.setter(false);
+              console.log(field_values);
+              props.update_card_data_function(field_values);
+              /*Object.entries(field_values).map(([name, c]) => {
+                props.save_function(name, c.value);
+              });*/
+            }}
+          >
+            Save
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              props.setter(false);
+              setFieldValues(props.data);
+            }}
+          >
+            Cancel
           </Button>
         </Modal.Footer>
       </Modal>
