@@ -9,25 +9,8 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 export default function PartCard(props) {
   const [editor, setEditor] = useState(false);
   const [modal, setModal] = useState(false);
-  console.log(setEditor);
+  console.log("Ignore", setEditor);
 
-  const save_card_field = (card_id, field_name, field_value) => {
-    let new_cards = props.all_cards.map((card) => {
-      return card.card_id != card_id
-        ? card
-        : {
-            ...card,
-            card_data: {
-              ...card.card_data,
-              [field_name]: {
-                ...card.card_data[field_name],
-                value: field_value,
-              },
-            },
-          };
-    });
-    props.setter(new_cards);
-  };
   return (
     <>
       <Card className="Card">
@@ -42,7 +25,9 @@ export default function PartCard(props) {
                   <span className="caption">{c.caption}:</span>{" "}
                   <span className="value">{c.value}</span>
                 </div>
-              ) : null;
+              ) : (
+                <></>
+              );
             })}
           </Card.Title>
           <Card.Text>
@@ -55,7 +40,9 @@ export default function PartCard(props) {
                   <span className="caption">{c.caption}:</span>{" "}
                   <span className="value">{c.value}</span>
                 </div>
-              ) : null;
+              ) : (
+                <></>
+              );
             })}
           </Card.Text>
         </Card.Body>
@@ -65,8 +52,8 @@ export default function PartCard(props) {
         show={modal}
         setter={setModal}
         data={props.data}
-        card_id={props.id}
-        save_function={save_card_field}
+        card_id={props.card_id}
+        save_function={props.field_update_function}
       />
     </>
   );
@@ -90,7 +77,9 @@ function CardModal(props) {
                 <div key={name}>
                   <span className="value">{c.value}</span>
                 </div>
-              ) : null;
+              ) : (
+                <></>
+              );
             })}
           </Modal.Title>
         </Modal.Header>
@@ -108,13 +97,13 @@ function CardModal(props) {
                     as={c.edit_type == "textarea" ? "textarea" : "input"}
                     aria-label={c.caption}
                     value={c.value}
-                    onChange={(e) =>
-                      props.save_function(props.card_id, name, e.target.value)
-                    }
+                    onChange={(e) => props.save_function(name, e.target.value)}
                   />
                 </FloatingLabel>
               </div>
-            ) : null;
+            ) : (
+              <></>
+            );
           })}
         </Modal.Body>
 
