@@ -7,7 +7,7 @@ export async function get_card_data(pipeline, program_code, token, setter) {
     program_code +
     "&token=" +
     token;
-  fetch(url, { mode: "cors", method: "GET", headers })
+  fetch(url, { mode: "no-cors", method: "GET", headers })
     .then((response) => {
       console.log("url", url);
       response
