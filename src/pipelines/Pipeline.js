@@ -47,6 +47,7 @@ export default function Pipeline() {
           Save
         </Button>{" "}
       </h1>
+
       <div className="Columns">
         {columns.map((c) => {
           return (
