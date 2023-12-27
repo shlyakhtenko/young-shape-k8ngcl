@@ -82,16 +82,21 @@ div.Columns div.columnContainer h2 {
   padding: 0.3em;
 }
 div.Columns div.columnContainer div.column > * {
-  flex: 0 1 0;
 }
 div.Columns div.columnContainer div.column {
   max-height: 90vh;
   min-height: 90vh;
+
   background-color: rgb(250, 250, 250);
+  align-content: flex-start;
   display: flex;
   flex-flow: row wrap;
   overflow-y: scroll;
   border: none;
+}
+div.Columns div.columnContainer div.column div:last-child {
+  align-self: stretch;
+  padding-bottom: 12em;
 }
 
 .cardModalTitle div {
