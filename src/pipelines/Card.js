@@ -10,7 +10,7 @@ import FormLabel from "react-bootstrap/FormLabel";
 export default function PartCard(props) {
   const [editor, setEditor] = useState(false);
   const [modal, setModal] = useState(false);
-  console.log("Ignore", setEditor);
+  //setEditor(false);
 
   return (
     <>
@@ -102,13 +102,10 @@ function CardModal(props) {
                 <div key={name}>
                   <Form.Group className="mb-3" controlId={name}>
                     <FormLabel controlId={name}>{c.caption}</FormLabel>
-                    <Form.Control
-                      as={c.edit_type == "textarea" ? "textarea" : "input"}
-                      rows={4}
-                      id={name}
-                      value={c.value}
-                      onChange={
-                        (e) => {
+                    {c.edit_type == "select_yesno" ? (
+                      <Form.Select
+                        value={c.value}
+                        onChange={(e) => {
                           setFieldValues({
                             ...field_values,
                             [name]: {
@@ -116,10 +113,32 @@ function CardModal(props) {
                               value: e.target.value,
                             },
                           });
+                        }}
+                      >
+                        <option value={null}>Unknown</option>
+                        <option value={1}>Yes</option>
+                        <option value={0}>No</option>
+                      </Form.Select>
+                    ) : (
+                      <Form.Control
+                        as={c.edit_type == "textarea" ? "textarea" : "input"}
+                        rows={4}
+                        id={name}
+                        value={c.value}
+                        onChange={
+                          (e) => {
+                            setFieldValues({
+                              ...field_values,
+                              [name]: {
+                                ...field_values[name],
+                                value: e.target.value,
+                              },
+                            });
+                          }
+                          //(e) => props.save_function(name, e.target.value)
                         }
-                        //(e) => props.save_function(name, e.target.value)
-                      }
-                    />
+                      />
+                    )}
                   </Form.Group>
                 </div>
               ) : (

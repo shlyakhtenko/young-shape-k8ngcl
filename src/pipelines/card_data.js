@@ -1,17 +1,17 @@
 export async function get_card_data(pipeline, program_code, token, setter) {
-  const headers = { "Access-Control-Allow-Origin": "*" };
+  const headers = {};
   const url =
     "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
     pipeline +
-    "&event_code=" +
+    "&programcode=" +
     program_code +
     "&token=" +
     token;
-  fetch(url, { mode: "no-cors", method: "GET", headers })
+  fetch(url, { mode: "cors", method: "GET", headers })
     .then((response) => {
       console.log("url", url);
       response
-        .text()
+        .json()
         .then((data) => {
           console.log("Got data:", data);
           setter(data);
