@@ -1,23 +1,29 @@
-export function get_card_data(pipeline, program_code, token, setter) {
-  const headers = { Authorization: "Basic " + token };
-  fetch(
+export async function get_card_data(pipeline, program_code, token, setter) {
+  const headers = { "Access-Control-Allow-Origin": "*" };
+  const url =
     "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
-      pipeline +
-      "&event_code=" +
-      program_code,
-    { headers, mode: "no-cors" },
-  ).then((response) => {
-    console.log("response", response);
-    response
-      .json()
-      .then((data) => {
-        console.log("Got data:", data);
-        setter(data);
-      })
-      .catch((err) => {
-        console.log("JSON convertsion error:", err);
-      });
-  });
+    pipeline +
+    "&event_code=" +
+    program_code +
+    "&token=" +
+    token;
+  fetch(url, { mode: "cors", method: "GET", headers })
+    .then((response) => {
+      console.log("url", url);
+      response
+        .text()
+        .then((data) => {
+          console.log("Got data:", data);
+          setter(data);
+          return;
+        })
+        .catch((err) => {
+          console.log("Error: JSON convertsion error:", err);
+        });
+    })
+    .catch((err) => {
+      console.log("Fetch Error:", err);
+    });
 }
 
 export function get_card_data1(pipeline, program_code, token) {

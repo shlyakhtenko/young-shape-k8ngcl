@@ -24,9 +24,7 @@ export default function Pipeline() {
     });
   };
 
-  setup_data(
-    get_card_data(params.pipeline, params.event_code, loginToken, setup_data),
-  );
+  get_card_data(params.pipelineName, params.event_code, loginToken, setup_data);
 
   //const [columns, setColumns] = useState(card_data.columns);
 
