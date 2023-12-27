@@ -5,8 +5,8 @@
   margin-bottom: 1em;
   width: 18em;
   min-width: 18em;
-  height: 12em;
-  min-height: 12em;
+  min-height: 3em;
+  max-height: 12em;
   overflow: hidden;
   padding: 0.2em;
   background: rgb(230, 230, 230);
@@ -34,26 +34,32 @@
   font-family: sans-serif;
   text-align: center;
 }
-
+body {
+  max-height: 100vh;
+}
 div.Pipeline {
-  width: 100%;
-  min-width: 100%;
+  width: 100vw;
+  min-width: 100vw;
+  max-height: 100%;
 }
 div.Columns {
-  display: table-row;
-  width: 100%;
-  min-width: 100%;
-  text-align: center;
+  display: inline-flex;
+
   vertical-align: top;
+}
+
+div.columns > * {
+  flex: 1;
 }
 
 div.Columns div.columnContainer {
   padding: 2em;
-  display: table-cell;
+  display: inline-block;
   border-collapse: collapse;
   border-left: 1px solid grey;
-  height: 100%;
   min-height: 100%;
+  max-height: 100%;
+  min-width: auto;
 }
 div.Columns div.columnContainer:first-child {
   border-left: none;
@@ -64,11 +70,11 @@ div.Columns div.columnContainer h2 {
 }
 
 div.Columns div.columnContainer div.column {
-  height: 100%;
-  min-height: 50em;
-  display: flex;
+  max-height: 90vh;
+  min-height: 90vh;
+  display: inline-block;
   overflow-y: scroll;
-  border: 1px solid red;
+  border: none;
   min-width: 20em;
   flex-direction: column;
 }

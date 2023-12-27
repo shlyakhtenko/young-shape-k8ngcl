@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import "./styles.css";
 
 export default function Login(props) {
   const [loginName, setLoginName] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
   return (
-    <Form>
+    <Form className="loginForm">
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control

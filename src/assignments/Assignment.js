@@ -8,11 +8,11 @@ export default function Assignments() {
   let workshops = [
     { label: "GSIWS1", value: "GSIWS1" },
     { label: "GSIWS2", value: "GSIWS2" },
-    { label: "GSIWS3", value: "GSIWS3" }
+    { label: "GSIWS3", value: "GSIWS3" },
   ];
 
   let pipelines = [
-    { label: "Collect Titles", value: "speaker_titles" },
+    { label: "Collect Titles", value: "talk_titles" },
     { label: "Confirm Speakers", value: "confirm_speakers" },
   ];
 
@@ -41,7 +41,7 @@ export default function Assignments() {
           <a href="pipeline_manager/new/">New Pipeline</a>
         </li>
         <li>
-          <a href={"/workshop/"+programCode+"/"+pipeline}>
+          <a href={"/workshop/" + programCode + "/" + pipeline}>
             Pipeline {pipeline} for {programCode}
           </a>
         </li>

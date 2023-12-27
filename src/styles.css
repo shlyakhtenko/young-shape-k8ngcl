@@ -90,3 +90,13 @@
   margin-bottom: 1em;
   border-bottom: 1px solid black;
 }
+
+.loginForm {
+  margin-top: 25vh;
+  margin-bottom: auto;
+  margin-left: 30vw;
+  margin-right: 30vw;
+  border: 2px solid black;
+  background: rgb(230, 230, 230);
+  padding: 3em;
+}

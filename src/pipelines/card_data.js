@@ -1,5 +1,5 @@
 export async function get_card_data(pipeline, program_code, token, setter) {
-  const headers = {};
+  const headers = { authorization: "Basic " + token };
   const url =
     "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
     pipeline +
