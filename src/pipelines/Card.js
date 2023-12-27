@@ -4,7 +4,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
 //import InputGroup from "react-bootstrap/InputGroup";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
+//import FloatingLabel from "react-bootstrap/FloatingLabel";
+import FormLabel from "react-bootstrap/FormLabel";
 
 export default function PartCard(props) {
   const [editor, setEditor] = useState(false);
@@ -74,6 +75,7 @@ function CardModal(props) {
     <div className="modal show cardModal">
       <Modal
         show={props.show}
+        size="lg"
         onHide={() => {
           props.setter(false);
           setFieldValues(props.data);
@@ -94,37 +96,37 @@ function CardModal(props) {
         </Modal.Header>
 
         <Modal.Body>
-          {Object.entries(field_values).map(([name, c]) => {
-            return c.editable ? (
-              <div key={name}>
-                <FloatingLabel
-                  controlId={name}
-                  label={c.caption}
-                  className="mb-3"
-                >
-                  <Form.Control
-                    as={c.edit_type == "textarea" ? "textarea" : "input"}
-                    aria-label={c.caption}
-                    value={c.value}
-                    onChange={
-                      (e) => {
-                        setFieldValues({
-                          ...field_values,
-                          [name]: {
-                            ...field_values[name],
-                            value: e.target.value,
-                          },
-                        });
+          <Form>
+            {Object.entries(field_values).map(([name, c]) => {
+              return c.editable ? (
+                <div key={name}>
+                  <Form.Group className="mb-3" controlId={name}>
+                    <FormLabel controlId={name}>{c.caption}</FormLabel>
+                    <Form.Control
+                      as={c.edit_type == "textarea" ? "textarea" : "input"}
+                      rows={4}
+                      id={name}
+                      value={c.value}
+                      onChange={
+                        (e) => {
+                          setFieldValues({
+                            ...field_values,
+                            [name]: {
+                              ...field_values[name],
+                              value: e.target.value,
+                            },
+                          });
+                        }
+                        //(e) => props.save_function(name, e.target.value)
                       }
-                      //(e) => props.save_function(name, e.target.value)
-                    }
-                  />
-                </FloatingLabel>
-              </div>
-            ) : (
-              <></>
-            );
-          })}
+                    />
+                  </Form.Group>
+                </div>
+              ) : (
+                <></>
+              );
+            })}
+          </Form>
         </Modal.Body>
 
         <Modal.Footer>

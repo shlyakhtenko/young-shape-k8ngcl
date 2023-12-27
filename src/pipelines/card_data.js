@@ -1,5 +1,27 @@
-export function get_card_data(pipeline, program_code) {
-  console.log("ignore", pipeline, program_code);
+export function get_card_data(pipeline, program_code, token, setter) {
+  const headers = { Authorization: "Basic " + token };
+  fetch(
+    "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
+      pipeline +
+      "&event_code=" +
+      program_code,
+    { headers, mode: "no-cors" },
+  ).then((response) => {
+    console.log("response", response);
+    response
+      .json()
+      .then((data) => {
+        console.log("Got data:", data);
+        setter(data);
+      })
+      .catch((err) => {
+        console.log("JSON convertsion error:", err);
+      });
+  });
+}
+
+export function get_card_data1(pipeline, program_code, token) {
+  console.log("ignore", pipeline, program_code, token);
   let card_data = {
     cards: [
       {

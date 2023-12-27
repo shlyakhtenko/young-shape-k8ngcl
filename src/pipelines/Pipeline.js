@@ -1,22 +1,33 @@
 import "./styles.css";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { get_card_data } from "./card_data";
 import { ReactSortable } from "react-sortablejs";
 import { Button } from "react-bootstrap";
 import PartCard from "./Card";
+import { LoginContext } from "../App";
 
 export default function Pipeline() {
   let params = useParams();
-  let card_data = get_card_data(params.pipelineName, params.programCode);
+  const loginToken = useContext(LoginContext);
+  let columns = [];
   var column_cards = {};
   var setColumn_cards = {};
-  let columns = card_data.columns;
-  columns.forEach((c) => {
-    [column_cards[c.name], setColumn_cards[c.name]] = useState(
-      card_data.cards.filter((cc) => cc.target_column === c.name),
-    );
-  });
+
+  let setup_data = (card_data) => {
+    console.log("setup_data", card_data);
+    columns = card_data.columns;
+    columns.forEach((c) => {
+      [column_cards[c.name], setColumn_cards[c.name]] = useState(
+        card_data.cards.filter((cc) => cc.target_column === c.name),
+      );
+    });
+  };
+
+  setup_data(
+    get_card_data(params.pipeline, params.event_code, loginToken, setup_data),
+  );
+
   //const [columns, setColumns] = useState(card_data.columns);
 
   return (
@@ -84,20 +95,18 @@ export default function Pipeline() {
                         data={ccc.card_data}
                         card_id={ccc.card_id}
                         id={ccc.card_id}
-                        update_card_data_function={
-                          (new_card_data)=>{
-                            setColumn_cards[c.name](
-                              column_cards[c.name].map((card) => {
-                                return card.card_id != ccc.card_id
-                                  ? card
-                                  : {
-                                      ...card,
-                                      card_data: new_card_data
-                                    };
-                              }),
-                            );
-                          }
-                        }
+                        update_card_data_function={(new_card_data) => {
+                          setColumn_cards[c.name](
+                            column_cards[c.name].map((card) => {
+                              return card.card_id != ccc.card_id
+                                ? card
+                                : {
+                                    ...card,
+                                    card_data: new_card_data,
+                                  };
+                            }),
+                          );
+                        }}
                         field_update_function={(field_name, field_value) => {
                           console.log(
                             "cardid",
