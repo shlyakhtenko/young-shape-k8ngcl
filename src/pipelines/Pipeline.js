@@ -11,17 +11,19 @@ import Modal from "react-bootstrap/Modal";
 function ErrorDialog(props) {
   return (
     <div className="modal show">
-      <Modal.Dialog>
-        <Modal.Header>
-          <Modal.Title>Error</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>{props.message}</p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => props.setter(false)}>Close</Button>
-        </Modal.Footer>
-      </Modal.Dialog>
+      <Modal show={props.show}>
+        <Modal.Dialog>
+          <Modal.Header>
+            <Modal.Title>
+              <h1>Error</h1>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{props.message}</Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => props.setter(false)}>Close</Button>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </Modal>
     </div>
   );
 }
@@ -43,6 +45,7 @@ export default function Pipeline() {
   };
 
   let raiseError = (message) => {
+    console.log("raiseError", message);
     setErrorDialog(true);
     setErrorMessage(message);
   };

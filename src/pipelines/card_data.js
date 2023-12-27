@@ -23,21 +23,28 @@ export async function get_card_data(
         })
         .catch((err) => {
           raiseError(
-            "JSON conversion error" +
-              err +
-              " for url " +
-              url +
-              ". Check whether pipline name is valid",
+            <div>
+              <h1>JSON conversion error</h1>
+              <h2>{"" + err}</h2>
+              <div>{"url: " + url} </div>
+              <div>
+                Check your login credentials and whether the pipline name is
+                valid
+              </div>
+            </div>,
           );
         });
     })
     .catch((err) => {
       raiseError(
-        "Data load error" +
-          err +
-          " for url " +
-          url +
-          ". Check whether pipline name is valid",
+        <div>
+          <h1>Data load error</h1>
+          <h2>{"" + err}</h2>
+          <div>{"url: " + url} </div>
+          <div>
+            Check your login credentials and whether the pipline name is valid
+          </div>
+        </div>,
       );
     });
 }

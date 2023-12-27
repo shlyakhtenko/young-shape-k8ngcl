@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/malebolge/static/css/main.760a8a32.css",
-    "main.js": "/malebolge/static/js/main.6b03bdbc.js",
+    "main.css": "/malebolge/static/css/main.32b9c671.css",
+    "main.js": "/malebolge/static/js/main.df1c82c1.js",
     "index.html": "/malebolge/index.html",
-    "main.760a8a32.css.map": "/malebolge/static/css/main.760a8a32.css.map",
-    "main.6b03bdbc.js.map": "/malebolge/static/js/main.6b03bdbc.js.map"
+    "main.32b9c671.css.map": "/malebolge/static/css/main.32b9c671.css.map",
+    "main.df1c82c1.js.map": "/malebolge/static/js/main.df1c82c1.js.map"
   },
   "entrypoints": [
-    "static/css/main.760a8a32.css",
-    "static/js/main.6b03bdbc.js"
+    "static/css/main.32b9c671.css",
+    "static/js/main.df1c82c1.js"
   ]
 }
