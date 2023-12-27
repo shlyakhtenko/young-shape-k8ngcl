@@ -24,14 +24,22 @@ export default function PartCard(props) {
                   className={c.editable ? "Editable" : "notEditable"}
                 >
                   <span className="caption">{c.caption}:</span>{" "}
-                  <span className="value">{c.value}</span>
+                  <span className="value">
+                    {c.edit_type != "select_yesno"
+                      ? c.value
+                      : c.value == null
+                        ? ""
+                        : c.value == 1
+                          ? "Yes"
+                          : "No"}
+                  </span>
                 </div>
               ) : (
-                <></>
+                <div key={name}></div>
               );
             })}
           </Card.Title>
-          <Card.Text>
+          <Card.Body>
             {Object.entries(props.data).map(([name, c]) => {
               return !c.display_on_card && c.editable ? (
                 <div
@@ -39,16 +47,24 @@ export default function PartCard(props) {
                   className={c.editable ? "Editable" : "notEditable"}
                 >
                   <span className="caption">{c.caption}:</span>{" "}
-                  <span className="value">{c.value}</span>
+                  <span className="value">
+                    {c.edit_type != "select_yesno"
+                      ? c.value
+                      : c.value == null
+                        ? ""
+                        : c.value == 1
+                          ? "Yes"
+                          : "No"}
+                  </span>
                 </div>
               ) : (
-                <></>
+                <div key={name}></div>
               );
             })}
-          </Card.Text>
+          </Card.Body>
         </Card.Body>
       </Card>
-      <CardEditor show={editor} />
+      <CardEditor show={editor} setter={setEditor} />
       <CardModal
         show={modal}
         setter={setModal}
@@ -63,7 +79,10 @@ export default function PartCard(props) {
 function CardEditor(props) {
   return (
     <div>
-      <Modal show={props.show}>CardEditor</Modal>
+      <Modal show={props.show} onHide={() => props.setter(false)}>
+        CardEditor
+        <Modal.Header closeButton></Modal.Header>
+      </Modal>
     </div>
   );
 }
@@ -89,7 +108,7 @@ function CardModal(props) {
                   <span className="value">{c.value}</span>
                 </div>
               ) : (
-                <></>
+                <div key={name}></div>
               );
             })}
           </Modal.Title>
@@ -142,7 +161,7 @@ function CardModal(props) {
                   </Form.Group>
                 </div>
               ) : (
-                <></>
+                <div key={name}></div>
               );
             })}
           </Form>

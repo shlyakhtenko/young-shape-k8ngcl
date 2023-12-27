@@ -6,21 +6,45 @@ import { ReactSortable } from "react-sortablejs";
 import { Button } from "react-bootstrap";
 import PartCard from "./Card";
 import { LoginContext } from "../App";
+import Modal from "react-bootstrap/Modal";
 
+function ErrorDialog(props) {
+  return (
+    <div className="modal show">
+      <Modal.Dialog>
+        <Modal.Header>
+          <Modal.Title>Error</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>{props.message}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => props.setter(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    </div>
+  );
+}
 export default function Pipeline() {
   let params = useParams();
   const loginToken = useContext(LoginContext);
   const [columns, setColumns] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  //var column_cards = {};
-  //var setColumn_cards = {};
-
+  const [pipelineCaption, setPipelineCaption] = useState(params.pipelineName);
   const [column_cards, setColumn_cards] = useState([]);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   let setup_data = (card_data) => {
     console.log("setup_data", card_data);
     setColumn_cards(card_data.cards);
     setColumns(card_data.columns);
+    setPipelineCaption(card_data.pipelineCaption);
+  };
+
+  let raiseError = (message) => {
+    setErrorDialog(true);
+    setErrorMessage(message);
   };
 
   if (!loaded) {
@@ -29,6 +53,7 @@ export default function Pipeline() {
       params.programCode,
       loginToken,
       setup_data,
+      raiseError,
     );
     setLoaded(true);
   }
@@ -36,8 +61,13 @@ export default function Pipeline() {
 
   return (
     <div className="Pipeline">
+      <ErrorDialog
+        show={errorDialog}
+        message={errorMessage}
+        setter={setErrorDialog}
+      />
       <h1>
-        Pipeline: {params.pipelineName}, Workhshop: {params.programCode}
+        {pipelineCaption} for {params.programCode}
         {console.log("Columns", columns, "Cards", column_cards)}
         <Button
           onClick={() => {
@@ -52,7 +82,17 @@ export default function Pipeline() {
         {columns.map((c) => {
           return (
             <div className="columnContainer" key={c.name}>
-              <h2>{c.caption}</h2>
+              <h2>
+                {c.caption}
+                <span className="cardCount">
+                  (
+                  {
+                    column_cards.filter((cc) => cc.target_column == c.name)
+                      .length
+                  }
+                  )
+                </span>
+              </h2>
               <ReactSortable
                 className="column"
                 key={c.name}

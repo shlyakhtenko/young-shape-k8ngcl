@@ -1,28 +1,44 @@
-export async function get_card_data(pipeline, program_code, token, setter) {
+export async function get_card_data(
+  pipeline,
+  program_code,
+  token,
+  setter,
+  raiseError,
+) {
   const headers = { authorization: "Basic " + token };
   const url =
     "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
     pipeline +
     "&programcode=" +
-    program_code +
-    "&token=" +
-    token;
+    program_code;
   fetch(url, { mode: "cors", method: "GET", headers })
     .then((response) => {
       console.log("url", url);
       response
         .json()
         .then((data) => {
-          console.log("Got data:", data);
+          //console.log("Got data:", data);
           setter(data);
           return;
         })
         .catch((err) => {
-          console.log("Error: JSON convertsion error:", err);
+          raiseError(
+            "JSON conversion error" +
+              err +
+              " for url " +
+              url +
+              ". Check whether pipline name is valid",
+          );
         });
     })
     .catch((err) => {
-      console.log("Fetch Error:", err);
+      raiseError(
+        "Data load error" +
+          err +
+          " for url " +
+          url +
+          ". Check whether pipline name is valid",
+      );
     });
 }
 
