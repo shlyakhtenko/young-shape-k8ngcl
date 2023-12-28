@@ -46,6 +46,11 @@ div.Pipeline {
 
 div.Pipeline h1 {
   text-align: center;
+  margin-top: 0.5em;
+}
+
+div.Pipeline .SaveButton {
+  margin-left: 2em;
 }
 
 div.Pipeline span.cardCount {
@@ -86,7 +91,7 @@ div.Columns div.columnContainer div.column > * {
 div.Columns div.columnContainer div.column {
   max-height: 90vh;
   min-height: 90vh;
-
+  min-width: 15em;
   background-color: rgb(250, 250, 250);
   align-content: flex-start;
   display: flex;
@@ -94,7 +99,7 @@ div.Columns div.columnContainer div.column {
   overflow-y: scroll;
   border: none;
 }
-div.Columns div.columnContainer div.column div:last-child {
+div.Columns div.columnContainer > div.column > div:last-child {
   align-self: stretch;
   padding-bottom: 12em;
 }
@@ -102,4 +107,22 @@ div.Columns div.columnContainer div.column div:last-child {
 .cardModalTitle div {
   display: inline-block;
   margin-right: 1em;
+}
+
+.Breadcrumb {
+  display: inline-block;
+  float: left;
+  margin-top: 0.5em;
+  margin-left: 2em;
+}
+div.saveStatus {
+  display: inline-block;
+  float: right;
+  margin-right: 2em;
+  margin-top: 0.5em;
+  margin-left: 2em;
+}
+div.top_bar {
+  background-color: grey;
+  border: 1px solid black;
 }

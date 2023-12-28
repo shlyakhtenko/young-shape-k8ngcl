@@ -3,30 +3,11 @@ import { useParams } from "react-router-dom";
 import { useState, useContext } from "react";
 import { get_card_data } from "./card_data";
 import { ReactSortable } from "react-sortablejs";
-import { Button } from "react-bootstrap";
+import { Button, Breadcrumb } from "react-bootstrap";
 import PartCard from "./Card";
 import { LoginContext } from "../App";
-import Modal from "react-bootstrap/Modal";
+import ErrorDialog from "../ErrorDialog";
 
-function ErrorDialog(props) {
-  return (
-    <div className="modal show">
-      <Modal show={props.show}>
-        <Modal.Dialog>
-          <Modal.Header>
-            <Modal.Title>
-              <h1>Error</h1>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{props.message}</Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => props.setter(false)}>Close</Button>
-          </Modal.Footer>
-        </Modal.Dialog>
-      </Modal>
-    </div>
-  );
-}
 export default function Pipeline() {
   let params = useParams();
   const loginToken = useContext(LoginContext);
@@ -36,6 +17,36 @@ export default function Pipeline() {
   const [column_cards, setColumn_cards] = useState([]);
   const [errorDialog, setErrorDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [saveStatus, setSaveStatus] = useState("Saved");
+
+  let save_one_card = (card_id, column, callback) => {
+    const headers = {
+      authorization: "Basic " + loginToken,
+      "Content-Type": "application/json",
+    };
+    const url =
+      "https://docs.ipam.ucla.edu/cocytus/save_card.php?pipepine=" +
+      params.pipelineName;
+    let new_card = column_cards.find((c) => c.card_id == card_id);
+    const body = JSON.stringify({ ...new_card, target_column: column });
+    callback("Saving...");
+    console.log("save_one_card", card_id, column, body);
+    fetch(url, {
+      mode: "cors",
+      headers: headers,
+      body: body,
+      method: "POST",
+    })
+      .then((response) => {
+        response.text().then(() => {
+          callback("Saved.");
+        });
+      })
+      .catch((error) => {
+        callback("Save error.");
+        console.log("save_one_card save error:  ", error);
+      });
+  };
 
   let setup_data = (card_data) => {
     console.log("setup_data", card_data);
@@ -69,18 +80,55 @@ export default function Pipeline() {
         message={errorMessage}
         setter={setErrorDialog}
       />
-      <h1>
-        {pipelineCaption} for {params.programCode}
-        {console.log("Columns", columns, "Cards", column_cards)}
-        <Button
-          onClick={() => {
-            console.log("Saving", column_cards);
-          }}
-        >
-          Save
-        </Button>{" "}
-      </h1>
+      <div className="top_bar">
+        <Breadcrumb className="Breadcrumb">
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href={"/workshop/" + params.programCode}>
+            {params.programCode}
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>{pipelineCaption}</Breadcrumb.Item>
+        </Breadcrumb>
+        <div className="saveStatus">
+          Data status: {saveStatus}
+          <Button
+            className="SaveButton"
+            size="sm"
+            onClick={() => {
+              const headers = {
+                authorization: "Basic " + loginToken,
+                "Content-Type": "application/json",
+              };
+              const url =
+                "https://docs.ipam.ucla.edu/cocytus/save_cards.php?pipeline=" +
+                params.pipelineName;
+              const body = JSON.stringify(column_cards);
 
+              console.log(
+                "saving column_cards before fetch url=",
+                url,
+                "body=",
+                body,
+                "headers=",
+                headers,
+              );
+              fetch(url, {
+                headers: headers,
+                body: body,
+                mode: "cors",
+                method: "POST",
+              }).then((response) => {
+                response.text().then((text) => {
+                  setSaveStatus("Saved.");
+                  console.log("Saving pipline. Got response: " + text);
+                });
+              });
+              //console.log(JSON.stringify(save_data));
+            }}
+          >
+            Save All Cards
+          </Button>
+        </div>
+      </div>
       <div className="Columns">
         {columns.map((c) => {
           return (
@@ -98,11 +146,15 @@ export default function Pipeline() {
               </h2>
               <ReactSortable
                 className="column"
+                id={c.name}
                 key={c.name}
                 group={{
                   name: c.name,
                   pull: c.pull,
                   put: c.put,
+                }}
+                onEnd={(e) => {
+                  save_one_card(e.item.id, e.to.id, setSaveStatus);
                 }}
                 list={column_cards.filter((cc) => {
                   return cc.target_column == c.name;
@@ -148,11 +200,10 @@ export default function Pipeline() {
                   .filter((x) => x.target_column == c.name)
                   .map((ccc) => {
                     return (
-                      <div key={ccc.card_id}>
+                      <div key={ccc.card_id} id={ccc.card_id}>
                         <PartCard
                           data={ccc.card_data}
                           card_id={ccc.card_id}
-                          id={ccc.card_id}
                           update_card_data_function={(new_card_data) => {
                             setColumn_cards(
                               column_cards.map((card) => {

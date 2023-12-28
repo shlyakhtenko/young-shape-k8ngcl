@@ -1,5 +1,7 @@
 import "./styles.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LoginContext } from "../App";
+
 import {
   compute_wips,
   compute_inputs,
@@ -18,6 +20,8 @@ import { useParams } from "react-router-dom";
 export default function PipelineEditor(props) {
   let target_pipeline = null;
   let pipeline_data = null;
+  const token = useContext(LoginContext);
+
   if (props.pipeline != "new") {
     let params = useParams();
     target_pipeline = params.pipelineName;
@@ -260,13 +264,39 @@ export default function PipelineEditor(props) {
         onClick={() => {
           let save_data = {
             data_source: data_source.name,
+            query: query.name,
             name: pipelineName,
             caption: pipeline,
             inputs: inputs,
             wips: wips,
             outputs: outputs,
           };
-          console.log(JSON.stringify(save_data));
+          const headers = {
+            authorization: "Basic " + token,
+            "Content-Type": "application/json",
+          };
+          const url = "https://docs.ipam.ucla.edu/cocytus/save_pipeline.php";
+          const body = JSON.stringify(save_data);
+
+          console.log(
+            "saving pipline before fetch url=",
+            url,
+            "body=",
+            body,
+            "headers=",
+            headers,
+          );
+          fetch(url, {
+            headers: headers,
+            body: body,
+            mode: "cors",
+            method: "POST",
+          }).then((response) => {
+            response.text().then((text) => {
+              console.log("Saving pipline. Got response: " + text);
+            });
+          });
+          //console.log(JSON.stringify(save_data));
         }}
       >
         Save
