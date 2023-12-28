@@ -119,8 +119,8 @@ function CardModal(props) {
             {Object.entries(field_values).map(([name, c]) => {
               return c.editable ? (
                 <div key={name}>
-                  <Form.Group className="mb-3" controlId={name}>
-                    <FormLabel controlId={name}>{c.caption}</FormLabel>
+                  <Form.Group className="mb-3">
+                    <FormLabel>{c.caption}</FormLabel>
                     {c.edit_type == "select_yesno" ? (
                       <Form.Select
                         value={c.value}
@@ -143,7 +143,7 @@ function CardModal(props) {
                         as={c.edit_type == "textarea" ? "textarea" : "input"}
                         rows={4}
                         id={name}
-                        value={c.value}
+                        value={c.value ? c.value : ""}
                         onChange={
                           (e) => {
                             setFieldValues({

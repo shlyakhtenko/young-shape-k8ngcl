@@ -19,7 +19,7 @@ export default function Pipeline() {
   const [errorMessage, setErrorMessage] = useState("");
   const [saveStatus, setSaveStatus] = useState("Saved");
 
-  let save_one_card = (card_id, column, callback) => {
+  let save_one_card = (card_id, column, callback, card_data = null) => {
     const headers = {
       authorization: "Basic " + loginToken,
       "Content-Type": "application/json",
@@ -27,7 +27,8 @@ export default function Pipeline() {
     const url =
       "https://docs.ipam.ucla.edu/cocytus/save_card.php?pipepine=" +
       params.pipelineName;
-    let new_card = column_cards.find((c) => c.card_id == card_id);
+    let new_card = card_data;
+    if (!new_card) new_card = column_cards.find((c) => c.card_id == card_id);
     const body = JSON.stringify({ ...new_card, target_column: column });
     callback("Saving...");
     console.log("save_one_card", card_id, column, body);
@@ -38,7 +39,8 @@ export default function Pipeline() {
       method: "POST",
     })
       .then((response) => {
-        response.text().then(() => {
+        response.text().then((txt) => {
+          console.log("saved card got response", txt);
           callback("Saved.");
         });
       })
@@ -215,31 +217,11 @@ export default function Pipeline() {
                                     };
                               }),
                             );
-                          }}
-                          field_update_function={(field_name, field_value) => {
-                            console.log(
-                              "cardid",
+                            save_one_card(
                               ccc.card_id,
-                              "updateing field",
-                              field_name,
-                              " to value ",
-                              field_value,
-                            );
-                            setColumn_cards(
-                              column_cards.map((card) => {
-                                return card.card_id != ccc.card_id
-                                  ? card
-                                  : {
-                                      ...card,
-                                      card_data: {
-                                        ...card.card_data,
-                                        [field_name]: {
-                                          ...card.card_data[field_name],
-                                          value: field_value,
-                                        },
-                                      },
-                                    };
-                              }),
+                              ccc.target_column,
+                              setSaveStatus,
+                              { ...ccc, card_data: new_card_data },
                             );
                           }}
                         />
