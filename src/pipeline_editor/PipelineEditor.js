@@ -25,7 +25,7 @@ export default function PipelineEditor(props) {
   //const [pipeline_data, setPipelineData] = useState(get_pipeline_data());
 
   const [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
-  const [pipeline, setPipeline] = useState(target_pipeline);
+
   const [data_sources, set_data_sources] = useState([]);
   const [data_source, setDataSource] = useState(null);
 
@@ -54,9 +54,9 @@ export default function PipelineEditor(props) {
     target_pipeline = "Pipeline";
     pipeline_data = get_pipeline_data()[0];
     setInputs(pipeline_data.inputs);
-    setWIPS([]);
-    setOutputs([]);
   }
+
+  const [pipeline, setPipeline] = useState(target_pipeline);
 
   const load_query_data = () => {
     const url = "https://docs.ipam.ucla.edu/cocytus/get_data_sources.php";
@@ -84,6 +84,7 @@ export default function PipelineEditor(props) {
           setInputs(pipeline_data.inputs);
           setWIPS(pipeline_data.wips);
           setOutputs(pipeline_data.outputs);
+          setPipeline(pipeline_data.caption);
         });
       },
     );
