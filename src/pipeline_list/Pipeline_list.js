@@ -1,55 +1,65 @@
 import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Form, Button, FormLabel } from "react-bootstrap";
 import { LoginContext } from "../App";
-
-async function get_pipelines(eventCode, loginToken) {
-  const headers = { authorization: "Basic " + loginToken };
-  const response = await fetch(
-    "https://docs.ipam.ucla.edu/cocytus/get_pipelines.php?event_code=" +
-      eventCode,
-    {
-      method: "GET",
-      headers: headers,
-      mode: "cors",
-    },
-  );
-  const data = await response.json();
-  console.log("get_pipelines returning:", data);
-  return data;
-}
+import { Navigate } from "react-router-dom";
+import ErrorDialog from "../ErrorDialog";
 
 export default function PipelineList() {
-  //const [pipelines, setPipelines] = useState([]);
-  const pipelines = [];
+  const [pipelines, setPipelines] = useState([]);
+  const [selectedPipeline, setSelectedPipeline] = useState(null);
+  const [errorDialog, setErrorDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const loginToken = useContext(LoginContext);
   const program_code = useParams().programCode;
+  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    let ps = async () => await get_pipelines(program_code, loginToken);
-    //setPipelines(ps);
-  });
+  let get_pipelines = (eventCode, loginToken) => {
+    const headers = { authorization: "Basic " + loginToken };
+    fetch(
+      "https://docs.ipam.ucla.edu/cocytus/get_pipelines.php?programcode=" +
+        eventCode,
+      {
+        method: "GET",
+        headers: headers,
+        mode: "cors",
+      },
+    )
+      .then((response) => {
+        response.json().then((data) => {
+          console.log("get_pipelines returning:", data);
+          setPipelines(data);
+          setLoaded(true);
+        });
+      })
+      .catch((error) => {
+        setErrorMessage(error.message);
+        setErrorDialog(true);
+      });
+  };
+
+  if (!loaded) get_pipelines(program_code, loginToken);
 
   return (
-    {console.log("pipelines", pipelines)}
     <div>
+      <ErrorDialog
+        show={errorDialog}
+        message={errorMessage}
+        setter={setErrorDialog}
+      />
       <h1>{program_code}: Available Pipelines</h1>
-      <Form>
-        <Form.Group>
-          <FormLabel>Select Pipeline</FormLabel>
-          <Form.Select>
-            {console.log("pipelines", pipelines)}
-            {pipelines.map((pipeline) => (
-              <option key={pipeline.name} value={pipeline.name}>
+      <ul>
+        {console.log("pipelines", pipelines)}
+        {pipelines.map((pipeline) => {
+          return (
+            <li key={pipeline.name}>
+              <a href={"/workshop/" + program_code + "/" + pipeline.name}>
                 {pipeline.caption}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-        <Form.Group>
-          <Button type="submit">Submit</Button>
-        </Form.Group>
-      </Form>
+              </a>{" "}
+              ({pipeline.num_cards} cards)
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

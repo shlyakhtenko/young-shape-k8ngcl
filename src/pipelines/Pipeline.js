@@ -25,8 +25,10 @@ export default function Pipeline() {
       "Content-Type": "application/json",
     };
     const url =
-      "https://docs.ipam.ucla.edu/cocytus/save_card.php?pipepine=" +
-      params.pipelineName;
+      "https://docs.ipam.ucla.edu/cocytus/save_card.php?pipeline=" +
+      params.pipelineName +
+      "&programcode=" +
+      params.programCode;
     let new_card = card_data;
     if (!new_card) new_card = column_cards.find((c) => c.card_id == card_id);
     const body = JSON.stringify({ ...new_card, target_column: column });
@@ -102,7 +104,9 @@ export default function Pipeline() {
               };
               const url =
                 "https://docs.ipam.ucla.edu/cocytus/save_cards.php?pipeline=" +
-                params.pipelineName;
+                params.pipelineName +
+                "&programcode=" +
+                params.programCode;
               const body = JSON.stringify(column_cards);
 
               console.log(
