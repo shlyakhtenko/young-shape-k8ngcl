@@ -22,7 +22,8 @@ export default function PipelineEditor(props) {
 
   const token = useContext(LoginContext);
 
-  const [pipeline_data, setPipelineData] = useState(null);
+  //const [pipeline_data, setPipelineData] = useState(get_pipeline_data());
+
   const [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
   const [pipeline, setPipeline] = useState(target_pipeline);
   const [data_sources, set_data_sources] = useState([]);
@@ -37,50 +38,66 @@ export default function PipelineEditor(props) {
     // compute_outputs(query, wips, "output", "Output Column"),
   ]);
   const [selectOptions, setSelectOptions] = useState([]);
+  let pipeline_data = null;
 
   if (props.pipeline != "new") {
     let params = useParams();
     target_pipeline = params.pipelineName;
-    setInputs(pipeline_data.inputs);
-    setWIPS(pipeline_data.wips);
-    setOutputs(pipeline_data.outputs);
+    pipeline_data = get_pipeline_data().find((x) => x.name == target_pipeline);
+    console.log(
+      "got pipeline data",
+      pipeline_data,
+      "for pipeline",
+      target_pipeline,
+    );
   } else {
     target_pipeline = "Pipeline";
+    pipeline_data = get_pipeline_data()[0];
+    setInputs(pipeline_data.inputs);
+    setWIPS([]);
+    setOutputs([]);
   }
 
   const load_query_data = () => {
     const url = "https://docs.ipam.ucla.edu/cocytus/get_data_sources.php";
-    const headers = {};
+    const headers = { authorization: "Basic " + token };
     fetch(url, { mode: "cors", headers: headers, method: "GET" }).then(
       (response) => {
         response.json().then((data) => {
+          console.log("pipeline_editor: got data", data);
           set_data_sources(data);
-          setDataSource(
-            data_sources.find((x) => x.name == pipeline_data.data_source),
+          let new_data_source = data.find(
+            (x) => x.name == pipeline_data.data_source,
           );
+          console.log("new_data_source", new_data_source, "loaded=", loaded);
+          setDataSource(new_data_source);
           setQuery(
-            data_source.available_queries.find(
+            new_data_source.available_queries.find(
               (x) => x.name == pipeline_data.inputs[0].query,
             ),
           );
           setSelectOptions(
-            data_source.available_queries.map((q) => {
+            new_data_source.available_queries.map((q) => {
               return { value: q.name, label: q.caption };
             }),
           );
-          setLoaded(true);
+          setInputs(pipeline_data.inputs);
+          setWIPS(pipeline_data.wips);
+          setOutputs(pipeline_data.outputs);
         });
       },
     );
   };
+
   if (!loaded) {
     load_query_data();
+    setLoaded(true);
   }
 
   return (
     <div className="App">
       <h1>Pipeline Editor</h1>
-      {loaded ? (
+      {data_source ? (
         <>
           <label className="pipelineName">
             Pipeline name:

@@ -8,7 +8,7 @@ export default function get_pipeline_data() {
         {
           name: "inputs",
           caption: "Input Column",
-          query: "view_speakers",
+          query: "v_speakers",
           fields: [
             {
               name: "firstname",
@@ -63,7 +63,7 @@ export default function get_pipeline_data() {
         {
           name: "wip01",
           caption: "Emailed",
-          query: "view_speakers",
+          query: "v_speakers",
           fields: [
             {
               name: "firstname",
@@ -117,7 +117,7 @@ export default function get_pipeline_data() {
         {
           name: "outputs01",
           caption: "Accepted",
-          query: "view_speakers",
+          query: "v_speakers",
           fields: [
             {
               name: "confirmed",
