@@ -1,6 +1,5 @@
 import Button from "react-bootstrap/Button";
 
-
 function Datacolumn(props) {
   // const [data, setData] = useState(props.column_data);
   const siblings = props.siblings;
@@ -39,22 +38,24 @@ function Datacolumn(props) {
             </tr>
           </thead>
           <tbody>
-            {data.fields.map((f) => {
+            {Object.entries(data.fields).map(([, f]) => {
               return (
-                <tr key = {"tr_"+f.name}>
+                <tr key={"tr_" + f.name}>
                   <td>{f.caption}</td>
                   {props.use_field ? (
                     <td>
                       <input
                         key={data.name + "_" + f.name + "_use"}
                         type="checkbox"
-                        checked={f.display}
+                        checked={f.display_on_card}
                         onChange={(e) => {
-                          let newfields = data.fields.map((d) => {
-                            return d.name == f.name
-                              ? { ...f, display: e.target.checked }
-                              : d;
-                          });
+                          let newfields = Object.entries(data.fields).map(
+                            ([, d]) => {
+                              return d.name == f.name
+                                ? { ...f, display_on_card: e.target.checked }
+                                : d;
+                            },
+                          );
                           let newsiblings = siblings.map((s) => {
                             return s.name == data.name
                               ? { ...data, fields: newfields }
@@ -76,11 +77,13 @@ function Datacolumn(props) {
                         checked={f.edit}
                         disabled={!f.editable || f.primary_key}
                         onChange={(e) => {
-                          let newfields = data.fields.map((d) => {
-                            return d.name == f.name
-                              ? { ...f, edit: e.target.checked }
-                              : d;
-                          });
+                          let newfields = Object.entries(data.fields).map(
+                            ([, d]) => {
+                              return d.name == f.name
+                                ? { ...f, edit: e.target.checked }
+                                : d;
+                            },
+                          );
                           //console.log(newfields);
                           let newsiblings = siblings.map((s) => {
                             return s.name == data.name
@@ -101,11 +104,13 @@ function Datacolumn(props) {
                     <input
                       key={data.name + "_" + f.name + "_criteria"}
                       onChange={(e) => {
-                        let newfields = data.fields.map((d) => {
-                          return d.name == f.name
-                            ? { ...f, criteria: [[{ op: e.target.value }]] }
-                            : d;
-                        });
+                        let newfields = Object.entries(data.fields).map(
+                          ([, d]) => {
+                            return d.name == f.name
+                              ? { ...f, criteria: [[{ op: e.target.value }]] }
+                              : d;
+                          },
+                        );
                         console.log(newfields);
                         let newsiblings = siblings.map((s) => {
                           return s.name == data.name
@@ -129,7 +134,13 @@ function Datacolumn(props) {
             onClick={() => {
               let newsiblings = siblings.filter((s) => {
                 if (props.keep_column) {
-                  console.log('s.name=', s.name, 'keep_column=', props.keep_column)
+                  console.log(
+                    "Datacolumn:",
+                    "s.name=",
+                    s.name,
+                    "keep_column=",
+                    props.keep_column,
+                  );
                   return s.name != data.name || s.name == props.keep_column;
                 } else {
                   return s.name != data.name;

@@ -8,7 +8,6 @@ import {
   compute_outputs,
 } from "./column_helpers.js";
 
-import get_pipeline_data from "./available_pipelines.js";
 import Datacolumn from "./Datacolumn.js";
 
 //import Select from "react-bootstrap/Form";
@@ -24,8 +23,6 @@ export default function PipelineEditor(props) {
 
   //const [pipeline_data, setPipelineData] = useState(get_pipeline_data());
 
-  const [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
-
   const [data_sources, set_data_sources] = useState([]);
   const [data_source, setDataSource] = useState(null);
 
@@ -38,22 +35,21 @@ export default function PipelineEditor(props) {
     // compute_outputs(query, wips, "output", "Output Column"),
   ]);
   const [selectOptions, setSelectOptions] = useState([]);
-  let pipeline_data = null;
+  const [pipeline_data, setPipelineData] = useState(null);
+
+  let pipelineName = null;
+  let setPipelineName = null;
 
   if (props.pipeline != "new") {
     let params = useParams();
     target_pipeline = params.pipelineName;
-    pipeline_data = get_pipeline_data().find((x) => x.name == target_pipeline);
-    console.log(
-      "got pipeline data",
-      pipeline_data,
-      "for pipeline",
-      target_pipeline,
-    );
+    //pipeline_data = get_pipeline_data().find((x) => x.name == target_pipeline);
+
+    [pipelineName, setPipelineName] = useState(target_pipeline); // pipelineID
   } else {
     target_pipeline = "Pipeline";
-    pipeline_data = get_pipeline_data()[0];
-    setInputs(pipeline_data.inputs);
+    //pipeline_data = get_pipeline_data()[0];
+    [pipelineName, setPipelineName] = useState(""); // pipelineID
   }
 
   const [pipeline, setPipeline] = useState(target_pipeline);
@@ -65,15 +61,34 @@ export default function PipelineEditor(props) {
       (response) => {
         response.json().then((data) => {
           console.log("pipeline_editor: got data", data);
-          set_data_sources(data);
-          let new_data_source = data.find(
-            (x) => x.name == pipeline_data.data_source,
+          let new_pipeline_data = null;
+          if (props.pipeline != "new") {
+            new_pipeline_data = data.pipelines.find(
+              (p) => p.name == target_pipeline,
+            );
+            console.log(
+              "pipeine editor: new_pipeline_data",
+              new_pipeline_data,
+              "data.piplines",
+              data.pipelines,
+              "looking for ",
+              target_pipeline,
+            );
+          } else {
+            new_pipeline_data = data.pipelines[0];
+          }
+
+          setPipelineData(new_pipeline_data);
+
+          set_data_sources(data.data_sources);
+          let new_data_source = data.data_sources.find(
+            (x) => x.name == new_pipeline_data.data_source,
           );
           console.log("new_data_source", new_data_source, "loaded=", loaded);
           setDataSource(new_data_source);
           setQuery(
             new_data_source.available_queries.find(
-              (x) => x.name == pipeline_data.inputs[0].query,
+              (x) => x.name == new_pipeline_data.inputs[0].query,
             ),
           );
           setSelectOptions(
@@ -81,10 +96,15 @@ export default function PipelineEditor(props) {
               return { value: q.name, label: q.caption };
             }),
           );
-          setInputs(pipeline_data.inputs);
-          setWIPS(pipeline_data.wips);
-          setOutputs(pipeline_data.outputs);
-          setPipeline(pipeline_data.caption);
+          setInputs(new_pipeline_data.inputs);
+          if (props.pipeline != "new") {
+            setWIPS(new_pipeline_data.wips);
+            setOutputs(new_pipeline_data.outputs);
+            setPipeline(new_pipeline_data.caption);
+          } else {
+            setPipeline("");
+          }
+          setLoaded(true);
         });
       },
     );
@@ -92,13 +112,40 @@ export default function PipelineEditor(props) {
 
   if (!loaded) {
     load_query_data();
-    setLoaded(true);
   }
+
+  console.log(
+    "done with setup",
+    "target_pipeline",
+    target_pipeline,
+    "pipeline_data",
+    pipeline_data,
+    "data_sources",
+    data_sources,
+    "data_source",
+    data_source,
+    "inputs",
+    inputs,
+    "query",
+    query,
+    "wips",
+    wips,
+    "outputs",
+    outputs,
+    "selectOptions",
+    selectOptions,
+    "pipeline",
+    pipeline,
+    "loaded",
+    loaded,
+    "pipelineName",
+    pipelineName,
+  );
 
   return (
     <div className="App">
       <h1>Pipeline Editor</h1>
-      {data_source ? (
+      {data_source && pipeline_data ? (
         <>
           <label className="pipelineName">
             Pipeline name:

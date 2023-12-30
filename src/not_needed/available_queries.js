@@ -5,7 +5,7 @@ export default function get_data_sources() {
       caption: "PITS data",
       available_queries: [
         {
-          name: "view_speakers",
+          name: "v_speakers",
           caption: "All speaker data",
           fields: {
             firstname: {
@@ -32,12 +32,12 @@ export default function get_data_sources() {
               caption: "User ID",
               type: "integer",
               editable: false,
-              primary_key: true
+              primary_key: true,
             },
           },
         },
         {
-          name: "speaker_titles",
+          name: "C",
           caption: "All speaker titles",
           fields: {
             firstname: {
