@@ -282,7 +282,7 @@ export default function PipelineEditor(props) {
                       siblings={inputs}
                       setter={setInputs}
                       key="inputs"
-                      use_field={false}
+                      use_field={true}
                       edit_field={false}
                     />
                   </div>
@@ -301,7 +301,7 @@ export default function PipelineEditor(props) {
                           remove_button
                           key={w.name}
                           output_setter={setOutputs}
-                          use_field={true}
+                          use_field={false}
                           edit_field={true}
                         />
                       );

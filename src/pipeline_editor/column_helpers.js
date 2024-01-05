@@ -55,7 +55,7 @@ export function compute_outputs(query, wips, column_name, column_caption) {
   ].map((ff) => {
     return ff.name;
   });
-  console.log(wip_fields);
+  console.log("compute_output: wip_fields = ", wip_fields, "query=", query);
 
   let xyz = {
     name: column_name,
@@ -79,5 +79,6 @@ export function compute_outputs(query, wips, column_name, column_caption) {
         return x != null;
       }),
   };
+  console.log("compute_outputs returning", xyz);
   return xyz;
 }
