@@ -287,7 +287,7 @@ function CardModal(props) {
                       body: formData,
                       mode: "cors",
                       method: "POST",
-                      headers,
+                      headers: headers,
                     }).then((response) => {
                       response.text().then((data) => console.log(data));
                     });
