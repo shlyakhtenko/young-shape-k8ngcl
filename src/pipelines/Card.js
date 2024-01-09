@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+import Attachment from "./attachment";
 
 //import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
@@ -88,13 +89,75 @@ function CardEditor(props) {
   );
 }
 
+function get_attachments(
+  token,
+  setter,
+  catd_id,
+  pipeline,
+  program_code,
+  raiseError,
+) {
+  const headers = { authorization: "Basic " + token };
+  const url =
+    "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
+    pipeline +
+    "&programcode=" +
+    program_code;
+  fetch(url, { mode: "cors", method: "GET", headers })
+    .then((response) => {
+      console.log("url", url);
+      response
+        .json()
+        .then((data) => {
+          //console.log("Got data:", data);
+          setter(data);
+          return;
+        })
+        .catch((err) => {
+          raiseError(
+            <div>
+              <h1>JSON conversion error</h1>
+              <h2>{"" + err}</h2>
+              <div>{"url: " + url} </div>
+              <div>
+                Check your login credentials and whether the pipline name is
+                valid
+              </div>
+            </div>,
+          );
+        });
+    })
+    .catch((err) => {
+      raiseError(
+        <div>
+          <h1>Data load error</h1>
+          <h2>{"" + err}</h2>
+          <div>{"url: " + url} </div>
+          <div>
+            Check your login credentials and whether the pipline name is valid
+          </div>
+        </div>,
+      );
+    });
+}
+
 function CardModal(props) {
   var [field_values, setFieldValues] = useState(props.data);
   var [attachmentsLoaded, setAttachmentsLoaded] = useState(false);
   var [attachments, setAttachments] = useState([]);
+  var [dragOver, setDragOver] = useState(false);
 
   if (!attachmentsLoaded) {
     setAttachmentsLoaded(true);
+
+    get_attachments(
+      props.token,
+      setAttachments,
+      props.card_id,
+      props.pipeline,
+      props.program_code,
+      console.log,
+    );
   }
 
   return (
@@ -175,14 +238,63 @@ function CardModal(props) {
           <FormLabel>Attachments</FormLabel>
           <div className="attachments">
             {attachments.map((a) => {
-              return <div key={a.id}>{a.name}</div>;
+              return (
+                <Attachment
+                  key={a.id}
+                  name={a.name}
+                  icon_url={a.icon_url}
+                  id={a.id}
+                  url={a.url}
+                  type={a.type}
+                  date={a.date}
+                />
+              );
             })}
           </div>
           <FloatingLabel
             controlId="floatingTextarea2"
             label="Drop files or emails here"
           >
-            <div className="dropArea"></div>
+            <div
+              className={"dropArea" + (dragOver ? " dragOver" : "")}
+              onDragOver={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setDragOver(true);
+              }}
+              onDragLeave={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setDragOver(false);
+              }}
+              onDrop={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                let formData = null;
+                console.log(e);
+                Object.entries(e.dataTransfer.items).forEach(([k, item]) => {
+                  if (item.kind == "file") {
+                    formData = new FormData();
+                    formData.append("attachment", item.getAsFile());
+                    formData.append("card_id", props.card_id);
+                    formData.append("pipeline", props.pipeline);
+                    formData.append("program_code", props.program_code);
+                    formData.append("userid", props.data.userid.value);
+                    const headers = { authorization: "Basic " + props.token };
+                    const url =
+                      "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php";
+                    fetch(url, {
+                      body: formData,
+                      mode: "cors",
+                      method: "POST",
+                      headers,
+                    }).then((response) => {
+                      response.text().then((data) => console.log(data));
+                    });
+                  }
+                });
+              }}
+            ></div>
           </FloatingLabel>
         </Modal.Body>
 

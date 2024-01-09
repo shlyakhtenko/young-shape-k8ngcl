@@ -147,3 +147,8 @@ div.dropArea {
   width: 100%;
   min-width: 100%;
 }
+
+div.dragOver {
+  border: 1px solid black;
+  background-color: lightgrey;
+}
