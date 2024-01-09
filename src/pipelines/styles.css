@@ -132,8 +132,8 @@ div.attachments {
   padding: 1em;
   display: flex;
   flex-flow: row wrap;
-  overflow-y: scroll;
-  height: 5em;
+  overflow: scroll;
+  height: 15em;
   max-width: 11em;
   width: 100%;
   min-width: 100%;
@@ -151,4 +151,34 @@ div.dropArea {
 div.dragOver {
   border: 1px solid black;
   background-color: lightgrey;
+}
+
+div.attachment {
+  text-align: center;
+  margin-right: 0.3em;
+  max-height: 6.3em;
+  padding-top: 0.5em;
+}
+div.attachment > img {
+  max-height: 3em;
+  max-width: 3em;
+  width: 3em;
+  height: 3em;
+}
+div.attachmentName {
+  font-size: 70%;
+  max-width: 10em;
+  width: 10em;
+  max-height: 1.7em;
+  height: 1.7em;
+  overflow: hidden;
+}
+div.attachmentDate {
+  font-size: 70%;
+  max-height: 1.7em;
+}
+
+div.attachmentViewer {
+  min-height: 100vh;
+  border: 1px solid black;
 }

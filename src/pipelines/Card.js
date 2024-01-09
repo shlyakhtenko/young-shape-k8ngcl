@@ -67,18 +67,18 @@ export default function PartCard(props) {
         </Card.Body>
       </Card>
       <CardEditor show={editor} setter={setEditor} />
-      (modal?
-      <CardModal
-        show={modal}
-        setter={setModal}
-        data={props.data}
-        card_id={props.card_id}
-        loginToken={props.loginToken}
-        pipeline_name={props.pipeline_name}
-        program_code={props.program_code}
-        update_card_data_function={props.update_card_data_function}
-      />
-      :null)
+      {modal ? (
+        <CardModal
+          show={modal}
+          setter={setModal}
+          data={props.data}
+          card_id={props.card_id}
+          loginToken={props.loginToken}
+          pipeline_name={props.pipeline_name}
+          program_code={props.program_code}
+          update_card_data_function={props.update_card_data_function}
+        />
+      ) : null}
     </>
   );
 }
@@ -282,14 +282,14 @@ function CardModal(props) {
                 Object.entries(e.dataTransfer.items).forEach(([k, item]) => {
                   if (item.kind == "file") {
                     formData = new FormData();
-                    //formData.append("attachment", item.getAsFile());
+                    formData.append("attachment", item.getAsFile());
                     formData.append("card_id", props.card_id);
                     formData.append("pipeline", props.pipeline_name);
                     formData.append("program_code", props.program_code);
                     formData.append("userid", props.data.userid.value);
                     const headers = {
                       authorization: "Basic " + props.loginToken,
-                      "content-type": "multipart/form-data",
+                      // "content-type": "multipart/form-data",
                     };
                     console.log("headers", headers, "formdata:", formData);
                     const url =
@@ -301,6 +301,7 @@ function CardModal(props) {
                       headers: headers,
                     }).then((response) => {
                       response.text().then((data) => console.log(data));
+                      setAttachmentsLoaded(false);
                       setDragOver(false);
                     });
                   }
