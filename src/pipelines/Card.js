@@ -3,8 +3,9 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Card from "react-bootstrap/Card";
+
 //import InputGroup from "react-bootstrap/InputGroup";
-//import FloatingLabel from "react-bootstrap/FloatingLabel";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 import FormLabel from "react-bootstrap/FormLabel";
 
 export default function PartCard(props) {
@@ -89,6 +90,12 @@ function CardEditor(props) {
 
 function CardModal(props) {
   var [field_values, setFieldValues] = useState(props.data);
+  var [attachmentsLoaded, setAttachmentsLoaded] = useState(false);
+  var [attachments, setAttachments] = useState([]);
+
+  if (!attachmentsLoaded) {
+    setAttachmentsLoaded(true);
+  }
 
   return (
     <div className="modal show cardModal">
@@ -165,6 +172,18 @@ function CardModal(props) {
               );
             })}
           </Form>
+          <FormLabel>Attachments</FormLabel>
+          <div className="attachments">
+            {attachments.map((a) => {
+              return <div key={a.id}>{a.name}</div>;
+            })}
+          </div>
+          <FloatingLabel
+            controlId="floatingTextarea2"
+            label="Drop files or emails here"
+          >
+            <div className="dropArea"></div>
+          </FloatingLabel>
         </Modal.Body>
 
         <Modal.Footer>
