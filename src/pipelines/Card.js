@@ -23,7 +23,11 @@ export default function PartCard(props) {
               return c.display_on_card ? (
                 <div
                   key={name}
-                  className={c.editable ? "Editable" : "notEditable"}
+                  className={
+                    (c.editable ? "Editable" : "notEditable") +
+                    " " +
+                    name.toString()
+                  }
                 >
                   <span className="caption">{c.caption}:</span>{" "}
                   <span className="value">
@@ -36,9 +40,7 @@ export default function PartCard(props) {
                           : "No"}
                   </span>
                 </div>
-              ) : (
-                <div key={name}></div>
-              );
+              ) : null;
             })}
           </Card.Title>
           <Card.Body>
@@ -46,7 +48,11 @@ export default function PartCard(props) {
               return !c.display_on_card && c.edit ? (
                 <div
                   key={name}
-                  className={c.editable ? "Editable" : "notEditable"}
+                  className={
+                    (c.editable ? "Editable" : "notEditable") +
+                    " " +
+                    name.toString()
+                  }
                 >
                   <span className="caption">{c.caption}:</span>{" "}
                   <span className="value">
@@ -59,9 +65,7 @@ export default function PartCard(props) {
                           : "No"}
                   </span>
                 </div>
-              ) : (
-                <div key={name}></div>
-              );
+              ) : null;
             })}
           </Card.Body>
         </Card.Body>
@@ -243,7 +247,52 @@ function CardModal(props) {
             })}
           </Form>
           <FormLabel>Attachments</FormLabel>
-          <div className="attachments">
+          <div
+            className={"attachments" + (dragOver ? " dragOver" : "")}
+            onDragOver={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setDragOver(true);
+            }}
+            onDragLeave={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setDragOver(false);
+            }}
+            onDrop={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              let formData = null;
+              console.log(e);
+              Object.entries(e.dataTransfer.items).forEach(([k, item]) => {
+                if (item.kind == "file") {
+                  formData = new FormData();
+                  formData.append("attachment", item.getAsFile());
+                  formData.append("card_id", props.card_id);
+                  formData.append("pipeline", props.pipeline_name);
+                  formData.append("program_code", props.program_code);
+                  formData.append("userid", props.data.userid.value);
+                  const headers = {
+                    authorization: "Basic " + props.loginToken,
+                    // "content-type": "multipart/form-data",
+                  };
+                  console.log("headers", headers, "formdata:", formData);
+                  const url =
+                    "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php";
+                  fetch(url, {
+                    body: formData,
+                    mode: "cors",
+                    method: "POST",
+                    headers: headers,
+                  }).then((response) => {
+                    response.text().then((data) => console.log(data));
+                    setDragOver(false);
+                    setAttachmentsLoaded(false);
+                  });
+                }
+              });
+            }}
+          >
             {attachments.map((a) => {
               return (
                 <Attachment
@@ -257,58 +306,7 @@ function CardModal(props) {
                 />
               );
             })}
-          </div>
-          <FloatingLabel
-            controlId="floatingTextarea2"
-            label="Drop files or emails here"
-          >
-            <div
-              className={"dropArea" + (dragOver ? " dragOver" : "")}
-              onDragOver={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setDragOver(true);
-              }}
-              onDragLeave={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setDragOver(false);
-              }}
-              onDrop={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                let formData = null;
-                console.log(e);
-                Object.entries(e.dataTransfer.items).forEach(([k, item]) => {
-                  if (item.kind == "file") {
-                    formData = new FormData();
-                    formData.append("attachment", item.getAsFile());
-                    formData.append("card_id", props.card_id);
-                    formData.append("pipeline", props.pipeline_name);
-                    formData.append("program_code", props.program_code);
-                    formData.append("userid", props.data.userid.value);
-                    const headers = {
-                      authorization: "Basic " + props.loginToken,
-                      // "content-type": "multipart/form-data",
-                    };
-                    console.log("headers", headers, "formdata:", formData);
-                    const url =
-                      "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php";
-                    fetch(url, {
-                      body: formData,
-                      mode: "cors",
-                      method: "POST",
-                      headers: headers,
-                    }).then((response) => {
-                      response.text().then((data) => console.log(data));
-                      setAttachmentsLoaded(false);
-                      setDragOver(false);
-                    });
-                  }
-                });
-              }}
-            ></div>
-          </FloatingLabel>
+          </div>{" "}
         </Modal.Body>
 
         <Modal.Footer>
