@@ -67,6 +67,7 @@ export default function PartCard(props) {
         </Card.Body>
       </Card>
       <CardEditor show={editor} setter={setEditor} />
+      (modal?
       <CardModal
         show={modal}
         setter={setModal}
@@ -77,6 +78,7 @@ export default function PartCard(props) {
         program_code={props.program_code}
         update_card_data_function={props.update_card_data_function}
       />
+      :null)
     </>
   );
 }
@@ -95,24 +97,26 @@ function CardEditor(props) {
 function get_attachments(
   token,
   setter,
-  catd_id,
+  card_id,
   pipeline,
   program_code,
   raiseError,
 ) {
   const headers = { authorization: "Basic " + token };
   const url =
-    "https://docs.ipam.ucla.edu/cocytus/data_source.php?pipeline=" +
+    "https://docs.ipam.ucla.edu/cocytus/get_associated_files.php?pipeline=" +
     pipeline +
     "&programcode=" +
-    program_code;
+    program_code +
+    "&card_id=" +
+    card_id;
   fetch(url, { mode: "cors", method: "GET", headers })
     .then((response) => {
-      console.log("url", url);
+      console.log("get_attachments: url", url);
       response
         .json()
         .then((data) => {
-          console.log("Got data:", data);
+          console.log("get_attachments: Got data...", data);
           setter(data);
           return;
         })
