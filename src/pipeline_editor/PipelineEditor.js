@@ -75,12 +75,19 @@ export default function PipelineEditor(props) {
               target_pipeline,
             );
           } else {
-            new_pipeline_data = data.pipelines[0];
+            new_pipeline_data = {
+              name: "new",
+              caption: "New Pipeline",
+              data_source: data.data_sources[0].name,
+              query: data.data_sources[0].available_queries[0].name,
+              inputs: compute_inputs(data.data_sources[0].available_queries[0]),
+            };
           }
 
           setPipelineData(new_pipeline_data);
 
           set_data_sources(data.data_sources);
+
           let new_data_source = data.data_sources.find(
             (x) => x.name == new_pipeline_data.data_source,
           );
@@ -103,6 +110,8 @@ export default function PipelineEditor(props) {
             setPipeline(new_pipeline_data.caption);
           } else {
             setPipeline("");
+            setWIPS([]);
+            setOutputs([]);
           }
           setLoaded(true);
         });

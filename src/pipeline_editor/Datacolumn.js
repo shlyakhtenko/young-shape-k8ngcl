@@ -74,7 +74,7 @@ function Datacolumn(props) {
                       <input
                         key={data.name + "_" + f.name + "_edit"}
                         type="checkbox"
-                        checked={f.edit}
+                        checked={f.edit ? 1 : 0}
                         disabled={!f.editable || f.primary_key}
                         onChange={(e) => {
                           let newfields = Object.entries(data.fields).map(

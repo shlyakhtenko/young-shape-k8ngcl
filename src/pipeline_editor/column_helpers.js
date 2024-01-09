@@ -10,6 +10,7 @@ export function compute_inputs(query) {
         caption: d.caption,
         editable: d.editable,
         primary_key: d.primary_key,
+        edit_type: d.edit_type,
         edit: false,
         criteria: [[]],
         display_on_card: null,

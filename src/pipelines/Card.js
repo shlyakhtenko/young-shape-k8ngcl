@@ -41,7 +41,7 @@ export default function PartCard(props) {
           </Card.Title>
           <Card.Body>
             {Object.entries(props.data).map(([name, c]) => {
-              return !c.display_on_card && c.editable ? (
+              return !c.display_on_card && c.edit ? (
                 <div
                   key={name}
                   className={c.editable ? "Editable" : "notEditable"}
@@ -103,7 +103,7 @@ function CardModal(props) {
         <Modal.Header closeButton>
           <Modal.Title className="cardModalTitle">
             {Object.entries(props.data).map(([name, c]) => {
-              return c.display_on_card ? (
+              return c.display_on_card && !c.edit ? (
                 <div key={name}>
                   <span className="value">{c.value}</span>
                 </div>
@@ -117,7 +117,7 @@ function CardModal(props) {
         <Modal.Body>
           <Form>
             {Object.entries(field_values).map(([name, c]) => {
-              return c.editable ? (
+              return c.edit ? (
                 <div key={name}>
                   <Form.Group className="mb-3">
                     <FormLabel>{c.caption}</FormLabel>
