@@ -210,6 +210,9 @@ export default function Pipeline() {
                         <PartCard
                           data={ccc.card_data}
                           card_id={ccc.card_id}
+                          loginToken={loginToken}
+                          pipeline_name={params.pipelineName}
+                          program_code={params.programCode}
                           update_card_data_function={(new_card_data) => {
                             setColumn_cards(
                               column_cards.map((card) => {

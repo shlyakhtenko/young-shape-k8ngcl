@@ -72,6 +72,9 @@ export default function PartCard(props) {
         setter={setModal}
         data={props.data}
         card_id={props.card_id}
+        loginToken={props.loginToken}
+        pipeline_name={props.pipeline_name}
+        program_code={props.program_code}
         update_card_data_function={props.update_card_data_function}
       />
     </>
@@ -109,7 +112,7 @@ function get_attachments(
       response
         .json()
         .then((data) => {
-          //console.log("Got data:", data);
+          console.log("Got data:", data);
           setter(data);
           return;
         })
@@ -151,10 +154,10 @@ function CardModal(props) {
     setAttachmentsLoaded(true);
 
     get_attachments(
-      props.token,
+      props.loginToken,
       setAttachments,
       props.card_id,
-      props.pipeline,
+      props.pipeline_name,
       props.program_code,
       console.log,
     );
@@ -277,13 +280,14 @@ function CardModal(props) {
                     formData = new FormData();
                     //formData.append("attachment", item.getAsFile());
                     formData.append("card_id", props.card_id);
-                    formData.append("pipeline", props.pipeline);
+                    formData.append("pipeline", props.pipeline_name);
                     formData.append("program_code", props.program_code);
                     formData.append("userid", props.data.userid.value);
                     const headers = {
-                      authorization: "Basic " + props.token,
-                      "content-type": "application/json",
+                      authorization: "Basic " + props.loginToken,
+                      "content-type": "multipart/form-data",
                     };
+                    console.log("headers", headers, "formdata:", formData);
                     const url =
                       "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php";
                     fetch(url, {
