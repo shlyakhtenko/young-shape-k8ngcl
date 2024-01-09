@@ -275,12 +275,15 @@ function CardModal(props) {
                 Object.entries(e.dataTransfer.items).forEach(([k, item]) => {
                   if (item.kind == "file") {
                     formData = new FormData();
-                    formData.append("attachment", item.getAsFile());
+                    //formData.append("attachment", item.getAsFile());
                     formData.append("card_id", props.card_id);
                     formData.append("pipeline", props.pipeline);
                     formData.append("program_code", props.program_code);
                     formData.append("userid", props.data.userid.value);
-                    const headers = { authorization: "Basic " + props.token };
+                    const headers = {
+                      authorization: "Basic " + props.token,
+                      "content-type": "application/json",
+                    };
                     const url =
                       "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php";
                     fetch(url, {
@@ -290,6 +293,7 @@ function CardModal(props) {
                       headers: headers,
                     }).then((response) => {
                       response.text().then((data) => console.log(data));
+                      setDragOver(false);
                     });
                   }
                 });
