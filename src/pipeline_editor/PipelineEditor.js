@@ -55,8 +55,13 @@ export default function PipelineEditor(props) {
   const [pipeline, setPipeline] = useState(target_pipeline);
 
   const load_query_data = () => {
-    const url = "https://docs.ipam.ucla.edu/cocytus/get_data_sources.php";
-    const headers = { authorization: "Basic " + token };
+    const url =
+      "https://docs.ipam.ucla.edu/cocytus/get_data_sources.php?ipam_id=" +
+      token.ipam_id +
+      "&session_token=" +
+      token.session_token;
+    const headers = {};
+    //const headers = { authorization: "Basic " + token };
     fetch(url, { mode: "cors", headers: headers, method: "GET" }).then(
       (response) => {
         response.json().then((data) => {
@@ -351,11 +356,14 @@ export default function PipelineEditor(props) {
                 outputs: outputs,
               };
               const headers = {
-                authorization: "Basic " + token,
+                //  authorization: "Basic " + token,
                 "Content-Type": "application/json",
               };
               const url =
-                "https://docs.ipam.ucla.edu/cocytus/save_pipeline.php";
+                "https://docs.ipam.ucla.edu/cocytus/save_pipeline.php?ipam_id=" +
+                token.ipam_id +
+                "&session_token=" +
+                token.session_token;
               const body = JSON.stringify(save_data);
 
               console.log(

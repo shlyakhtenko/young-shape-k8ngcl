@@ -14,9 +14,15 @@ export default function PipelineList() {
   const [loaded, setLoaded] = useState(false);
 
   let get_pipelines = (eventCode, loginToken) => {
-    const headers = { authorization: "Basic " + loginToken };
+    const headers = {
+      //authorization: "Basic " + loginToken
+    };
     fetch(
-      "https://docs.ipam.ucla.edu/cocytus/get_pipelines.php?programcode=" +
+      "https://docs.ipam.ucla.edu/cocytus/get_pipelines.php?ipam_id=" +
+        loginToken.ipam_id +
+        "&session_token=" +
+        loginToken.session_token +
+        "&programcode=" +
         eventCode,
       {
         method: "GET",

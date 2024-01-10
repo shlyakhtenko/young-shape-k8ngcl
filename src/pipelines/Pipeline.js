@@ -21,11 +21,15 @@ export default function Pipeline() {
 
   let save_one_card = (card_id, column, callback, card_data = null) => {
     const headers = {
-      authorization: "Basic " + loginToken,
+      //authorization: "Basic " + loginToken,
       "Content-Type": "application/json",
     };
     const url =
-      "https://docs.ipam.ucla.edu/cocytus/save_card.php?pipeline=" +
+      "https://docs.ipam.ucla.edu/cocytus/save_card.php?ipam_id=" +
+      loginToken.ipam_id +
+      "&session_token=" +
+      loginToken.session_token +
+      "&pipeline=" +
       params.pipelineName +
       "&programcode=" +
       params.programCode;
@@ -99,11 +103,15 @@ export default function Pipeline() {
             size="sm"
             onClick={() => {
               const headers = {
-                authorization: "Basic " + loginToken,
+                //authorization: "Basic " + loginToken,
                 "Content-Type": "application/json",
               };
               const url =
-                "https://docs.ipam.ucla.edu/cocytus/save_cards.php?pipeline=" +
+                "https://docs.ipam.ucla.edu/cocytus/save_cards.php?ipam_id=" +
+                loginToken.ipam_id +
+                "&session_token=" +
+                loginToken.session_token +
+                "&pipeline=" +
                 params.pipelineName +
                 "&programcode=" +
                 params.programCode;

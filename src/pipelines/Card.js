@@ -106,9 +106,15 @@ function get_attachments(
   program_code,
   raiseError,
 ) {
-  const headers = { authorization: "Basic " + token };
+  const headers = {
+    //authorization: "Basic " + token
+  };
   const url =
-    "https://docs.ipam.ucla.edu/cocytus/get_associated_files.php?pipeline=" +
+    "https://docs.ipam.ucla.edu/cocytus/get_associated_files.php?ipam_id=" +
+    token.ipam_id +
+    "&session_token=" +
+    token.session_token +
+    "&pipeline=" +
     pipeline +
     "&programcode=" +
     program_code +
@@ -273,12 +279,15 @@ function CardModal(props) {
                   formData.append("program_code", props.program_code);
                   formData.append("userid", props.data.userid.value);
                   const headers = {
-                    authorization: "Basic " + props.loginToken,
+                    //authorization: "Basic " + props.loginToken,
                     // "content-type": "multipart/form-data",
                   };
                   console.log("headers", headers, "formdata:", formData);
                   const url =
-                    "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php";
+                    "https://docs.ipam.ucla.edu/cocytus/upload_attachment.php?ipam_id=" +
+                    props.loginToken.ipam_id +
+                    "&session_token=" +
+                    props.loginToken.session_token;
                   fetch(url, {
                     body: formData,
                     mode: "cors",

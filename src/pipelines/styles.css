@@ -15,7 +15,7 @@
 
 .Card div.Editable {
   font-weight: normal;
-  font-size: 70%;
+  font-size: 80%;
   margin-top: 0.5em;
 }
 
@@ -26,7 +26,7 @@
 .Card div.notEditable {
   display: inline-block;
   margin-right: 0.5em;
-  font-size: 70%;
+  font-size: 80%;
 }
 
 .Card div.notEditable.firstname {
@@ -46,6 +46,7 @@
 .Card div.card-body div.card-body {
   border-top: 1px solid lightgrey;
   padding: 0em;
+  font-size: 105%;
 }
 .App {
   font-family: sans-serif;
