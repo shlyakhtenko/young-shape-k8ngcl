@@ -23,7 +23,6 @@ export default function App() {
     <GoogleOAuthProvider clientId="435223085160-t6cbke5ne7embk66a3d72s87ki1mm8ph.apps.googleusercontent.com">
       {!loginToken ? (
         <div className="Login">
-          To continue, please log in below:
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               console.log(credentialResponse);
