@@ -2,7 +2,10 @@ import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { LoginContext } from "../App";
 import { Navigate } from "react-router-dom";
+import { Breadcrumb, Container } from "react-bootstrap";
+import Row from "react-bootstrap/Row";
 import ErrorDialog from "../ErrorDialog";
+import ListGroup from "react-bootstrap/ListGroup";
 
 export default function PipelineList() {
   const [pipelines, setPipelines] = useState([]);
@@ -32,7 +35,7 @@ export default function PipelineList() {
     )
       .then((response) => {
         response.json().then((data) => {
-          console.log("get_pipelines returning:", data);
+          //console.log("get_pipelines returning:", data);
           setPipelines(data);
           setLoaded(true);
         });
@@ -46,26 +49,40 @@ export default function PipelineList() {
   if (!loaded) get_pipelines(program_code, loginToken);
 
   return (
-    <div>
-      <ErrorDialog
-        show={errorDialog}
-        message={errorMessage}
-        setter={setErrorDialog}
-      />
-      <h1>{program_code}: Available Pipelines</h1>
-      <ul>
-        {console.log("pipelines", pipelines)}
-        {pipelines.map((pipeline) => {
-          return (
-            <li key={pipeline.name}>
-              <a href={"/workshop/" + program_code + "/" + pipeline.name}>
-                {pipeline.caption}
-              </a>{" "}
-              ({pipeline.num_cards} cards)
-            </li>
-          );
-        })}
-      </ul>
+    <div className="pipelineList">
+      {errorDialog ? (
+        <ErrorDialog
+          show={errorDialog}
+          message={errorMessage}
+          setter={setErrorDialog}
+        />
+      ) : null}
+      <div className="top_bar">
+        <nav>
+          <Breadcrumb className="Breadcrumb">
+            <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+            <Breadcrumb.Item active>{program_code}</Breadcrumb.Item>
+          </Breadcrumb>
+        </nav>
+      </div>
+      <Container>
+        <Row>
+          <h1>{program_code}: Available Pipelines</h1>
+          <ListGroup>
+            {console.log("pipelines", pipelines)}
+            {pipelines.map((pipeline) => {
+              return (
+                <ListGroup.Item key={pipeline.name}>
+                  <a href={"/workshop/" + program_code + "/" + pipeline.name}>
+                    {pipeline.caption}
+                  </a>{" "}
+                  ({pipeline.num_cards} cards)
+                </ListGroup.Item>
+              );
+            })}
+          </ListGroup>
+        </Row>
+      </Container>
     </div>
   );
 }

@@ -109,3 +109,10 @@ div.Login {
   width: 15em;
   margin-top: 25vh;
 }
+div.logout {
+  float: right;
+  margin-right: 1em;
+  margin-left: auto;
+  margin-top: 0.4em;
+  color: grey;
+}

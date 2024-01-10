@@ -1,6 +1,10 @@
 import "../styles.css";
 import { useState, useContext } from "react";
 import { LoginContext } from "../App";
+import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
+import { Container } from "react-bootstrap";
+import Row from "react-bootstrap/Row";
 
 import Select from "react-select";
 export default function Assignments() {
@@ -51,41 +55,56 @@ export default function Assignments() {
 
   return (
     <div>
-      <h1>Assignments</h1>
-      <Select
-        options={workshops.map((v) => {
-          return {
-            label: v.ProgramCode + ": " + v.ProgramName,
-            value: v.ProgramCode,
-          };
-        })}
-        onChange={(v) => {
-          setProgramCode(v.value);
-        }}
-      ></Select>
-      <Select
-        options={pipelines.map((v) => {
-          return { label: v.caption, value: v.name };
-        })}
-        onChange={(val) => {
-          setPipeline(val.value);
-        }}
-      ></Select>
-      <ul>
-        <li>
-          <a href={"/pipeline_manager/edit/" + pipeline}>
-            Run Pipeline Manager for {pipeline}
-          </a>
-        </li>
-        <li>
-          <a href="pipeline_manager/new/">New Pipeline</a>
-        </li>
-        <li>
-          <a href={"/workshop/" + programCode + "/" + pipeline}>
-            Pipeline {pipeline} for {programCode}
-          </a>
-        </li>
-      </ul>
+      <Container>
+        <Row>
+          <h2>Program Management</h2>
+          <ListGroup>
+            <ListGroup.Item>
+              Select program:
+              <Select
+                options={workshops.map((v) => {
+                  return {
+                    label: v.ProgramCode + ": " + v.ProgramName,
+                    value: v.ProgramCode,
+                  };
+                })}
+                onChange={(v) => {
+                  setProgramCode(v.value);
+                }}
+              ></Select>
+              <Button
+                disabled={programCode == null ? true : false}
+                href={"/workshop/" + programCode}
+              >
+                See Pipelines
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
+          <h2>Pipeline Management</h2>
+          <ListGroup>
+            <ListGroup.Item>
+              Select pipeline:
+              <Select
+                options={pipelines.map((v) => {
+                  return { label: v.caption, value: v.name };
+                })}
+                onChange={(val) => {
+                  setPipeline(val.value);
+                }}
+              ></Select>
+              <Button
+                disabled={pipeline == null ? true : false}
+                href={"/pipeline_manager/edit/" + pipeline}
+              >
+                Edit Pipeline
+              </Button>{" "}
+              <Button variant="success" href="pipeline_manager/new/">
+                New Pipeline
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
+        </Row>
+      </Container>
     </div>
   );
 }

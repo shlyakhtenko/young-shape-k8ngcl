@@ -9,6 +9,7 @@ import {
 } from "./column_helpers.js";
 
 import Datacolumn from "./Datacolumn.js";
+import { Breadcrumb } from "react-bootstrap";
 
 //import Select from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -128,7 +129,7 @@ export default function PipelineEditor(props) {
     load_query_data();
   }
 
-  console.log(
+  /* console.log(
     "done with setup",
     "target_pipeline",
     target_pipeline,
@@ -154,10 +155,16 @@ export default function PipelineEditor(props) {
     loaded,
     "pipelineName",
     pipelineName,
-  );
+  ); */
 
   return (
     <div className="App">
+      <nav>
+        <Breadcrumb className="Breadcrumb">
+          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item active>Editing pipeline: {pipeline}</Breadcrumb.Item>
+        </Breadcrumb>
+      </nav>
       <h1>Pipeline Editor</h1>
       {data_source && pipeline_data ? (
         <>
@@ -381,7 +388,8 @@ export default function PipelineEditor(props) {
                 method: "POST",
               }).then((response) => {
                 response.text().then((text) => {
-                  console.log("Saving pipline. Got response: " + text);
+                  //console.log("Saving pipline. Got response: " + text);
+                  alert("Saved. Got response: " + text);
                 });
               });
               //console.log(JSON.stringify(save_data));

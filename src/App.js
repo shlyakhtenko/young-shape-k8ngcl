@@ -7,7 +7,12 @@ import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Login from "./Login.js";
 import PipelineList from "./pipeline_list/Pipeline_list.js";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import {
+  GoogleOAuthProvider,
+  GoogleLogin,
+  googleLogout,
+} from "@react-oauth/google";
+import Button from "react-bootstrap/Button";
 //import localStorage from "local-storage";
 
 export const LoginContext = createContext();
@@ -51,6 +56,21 @@ export default function App() {
         </div>
       ) : (
         <LoginContext.Provider value={loginToken}>
+          <div className="logout">
+            Logged in as {loginToken.firstname} {loginToken.lastname}.{" "}
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                googleLogout();
+                setLoginToken(null);
+                sessionStorage.removeItem("loginToken");
+              }}
+            >
+              Logout
+            </Button>
+          </div>
+
           <Routes>
             <Route
               path="/pipeline_manager/new"

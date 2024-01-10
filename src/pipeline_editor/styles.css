@@ -118,3 +118,7 @@
   margin-bottom: 1em;
   border: none;
 }
+
+div.App > nav {
+  padding-bottom: 3em;
+}
