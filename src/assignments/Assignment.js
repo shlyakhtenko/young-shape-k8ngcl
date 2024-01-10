@@ -1,5 +1,7 @@
 import "../styles.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { LoginContext } from "../App";
+
 import Select from "react-select";
 export default function Assignments() {
   const [programCode, setProgramCode] = useState(null);
@@ -8,28 +10,43 @@ export default function Assignments() {
   const [pipelines, setPipelines] = useState([]);
   const [workshopsLoaded, setWorkshopsLoaded] = useState(false);
   const [pipelinesLoaded, setPipelinesLoaded] = useState(false);
+  const loginToken = useContext(LoginContext);
 
   if (!workshopsLoaded) {
-    fetch("https://docs.ipam.ucla.edu/cocytus/get_programs.php").then(
-      (response) => {
-        response.json().then((data) => {
-          console.log(data);
-          setWorkshops(data);
-          setWorkshopsLoaded(true);
-        });
+    fetch(
+      "https://docs.ipam.ucla.edu/cocytus/get_programs.php?ipam_id=" +
+        loginToken.ipam_id +
+        "&session_token=" +
+        loginToken.session_token,
+      {
+        mode: "cors",
+        method: "GET",
       },
-    );
+    ).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+        setWorkshops(data);
+        setWorkshopsLoaded(true);
+      });
+    });
   }
   if (!pipelinesLoaded) {
-    fetch("https://docs.ipam.ucla.edu/cocytus/get_pipelines.php").then(
-      (response) => {
-        response.json().then((data) => {
-          console.log(data);
-          setPipelines(data);
-          setPipelinesLoaded(true);
-        });
+    fetch(
+      "https://docs.ipam.ucla.edu/cocytus/get_pipelines.php?ipam_id=" +
+        loginToken.ipam_id +
+        "&session_token=" +
+        loginToken.session_token,
+      {
+        mode: "cors",
+        method: "GET",
       },
-    );
+    ).then((response) => {
+      response.json().then((data) => {
+        console.log(data);
+        setPipelines(data);
+        setPipelinesLoaded(true);
+      });
+    });
   }
 
   return (
@@ -37,7 +54,10 @@ export default function Assignments() {
       <h1>Assignments</h1>
       <Select
         options={workshops.map((v) => {
-          return { label: v.programname, value: v.programcode };
+          return {
+            label: v.ProgramCode + ": " + v.ProgramName,
+            value: v.ProgramCode,
+          };
         })}
         onChange={(v) => {
           setProgramCode(v.value);
