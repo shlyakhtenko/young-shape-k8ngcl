@@ -51,7 +51,7 @@ export default function App() {
                 });
               });
             }}
-            //useOneTap
+            useOneTap
           ></GoogleLogin>
         </div>
       ) : (

@@ -294,7 +294,11 @@ function CardModal(props) {
                     method: "POST",
                     headers: headers,
                   }).then((response) => {
-                    response.text().then((data) => console.log(data));
+                    response
+                      .text()
+                      .then((data) =>
+                        console.log("uploaded file and got", data),
+                      );
                     setDragOver(false);
                     setAttachmentsLoaded(false);
                   });
@@ -312,6 +316,8 @@ function CardModal(props) {
                   url={a.url}
                   type={a.type}
                   date={a.date}
+                  ipam_id={props.loginToken.ipam_id}
+                  session_token={props.loginToken.session_token}
                 />
               );
             })}

@@ -5,7 +5,14 @@ import FileViewer from "react-file-viewer";
 
 export default function Attachment(props) {
   const [showModal, setShowModal] = useState(false);
-  const url = "https://" + "docs.ipam.ucla.edu" + props.url;
+  const url =
+    "https://" +
+    "docs.ipam.ucla.edu" +
+    props.url +
+    "&ipam_id=" +
+    props.ipam_id +
+    "&session_token=" +
+    props.session_token;
   const date = new Date(props.date);
   return (
     <>
@@ -13,7 +20,7 @@ export default function Attachment(props) {
         <div className="modal show attachmentModal">
           <Modal
             show={showModal}
-            size="lg"
+            size="xl"
             onHide={() => setShowModal(false)}
             centered
           >
