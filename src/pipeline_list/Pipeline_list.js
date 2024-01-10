@@ -6,6 +6,7 @@ import { Breadcrumb, Container } from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import ErrorDialog from "../ErrorDialog";
 import ListGroup from "react-bootstrap/ListGroup";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 export default function PipelineList() {
   const [pipelines, setPipelines] = useState([]);
@@ -75,8 +76,47 @@ export default function PipelineList() {
                 <ListGroup.Item key={pipeline.name}>
                   <a href={"/workshop/" + program_code + "/" + pipeline.name}>
                     {pipeline.caption}
-                  </a>{" "}
-                  ({pipeline.num_cards} cards)
+                  </a>
+                  {" -- "}
+                  Inputs: {pipeline.stats.inputs.total} cards, WIPS:{" "}
+                  {pipeline.stats.wips.total} cards, Outputs:{" "}
+                  {pipeline.stats.outputs.total} cards.
+                  <ProgressBar>
+                    <ProgressBar
+                      variant="danger"
+                      now={
+                        (100 * pipeline.stats.inputs.brand_new) /
+                        pipeline.stats.total
+                      }
+                      key={1}
+                    />
+                    <ProgressBar
+                      striped
+                      variant="danger"
+                      now={
+                        (100 *
+                          (pipeline.stats.inputs.total -
+                            pipeline.stats.inputs.brand_new)) /
+                        pipeline.stats.total
+                      }
+                      key={2}
+                    />
+                    <ProgressBar
+                      variant="warning"
+                      now={
+                        (100 * pipeline.stats.wips.total) / pipeline.stats.total
+                      }
+                      key={3}
+                    />
+                    <ProgressBar
+                      variant="success"
+                      now={
+                        (100 * pipeline.stats.outputs.total) /
+                        pipeline.stats.total
+                      }
+                      key={4}
+                    />
+                  </ProgressBar>
                 </ListGroup.Item>
               );
             })}
