@@ -352,6 +352,7 @@ export default function PipelineEditor(props) {
           </table>
           <hr />
           <Button
+            disabled={outputs.length == 0 || pipeline == ""}
             onClick={() => {
               let save_data = {
                 data_source: data_source.name,
