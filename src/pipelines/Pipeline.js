@@ -157,6 +157,17 @@ export default function Pipeline() {
                   }
                   )
                 </span>
+                <span className="cardCount newCards">
+                  {column_cards.filter(
+                    (cc) => cc.target_column == c.name && cc.brand_new,
+                  ).length > 0
+                    ? " [" +
+                      column_cards.filter(
+                        (cc) => cc.target_column == c.name && cc.brand_new,
+                      ).length +
+                      " new]"
+                    : ""}{" "}
+                </span>
               </h2>
               <ReactSortable
                 className="column"
@@ -169,6 +180,16 @@ export default function Pipeline() {
                 }}
                 onEnd={(e) => {
                   save_one_card(e.item.id, e.to.id, setSaveStatus);
+                  setColumn_cards((l) =>
+                    l.map((cc) => {
+                      return cc.card_id == e.item.id
+                        ? {
+                            ...cc,
+                            brand_new: false,
+                          }
+                        : cc;
+                    }),
+                  );
                 }}
                 list={column_cards.filter((cc) => {
                   return cc.target_column == c.name;
@@ -218,6 +239,8 @@ export default function Pipeline() {
                         <PartCard
                           data={ccc.card_data}
                           card_id={ccc.card_id}
+                          wilted={ccc.wilted}
+                          brand_new={ccc.brand_new}
                           loginToken={loginToken}
                           pipeline_name={params.pipelineName}
                           program_code={params.programCode}
@@ -229,6 +252,7 @@ export default function Pipeline() {
                                   : {
                                       ...card,
                                       card_data: new_card_data,
+                                      brand_new: false,
                                     };
                               }),
                             );
@@ -236,7 +260,11 @@ export default function Pipeline() {
                               ccc.card_id,
                               ccc.target_column,
                               setSaveStatus,
-                              { ...ccc, card_data: new_card_data },
+                              {
+                                ...ccc,
+                                card_data: new_card_data,
+                                brand_new: false,
+                              },
                             );
                           }}
                         />

@@ -16,7 +16,13 @@ export default function PartCard(props) {
 
   return (
     <>
-      <Card className="Card">
+      <Card
+        className={
+          "Card" +
+          (props.wilted ? " wilted" : "") +
+          (props.brand_new ? " brand_new" : "")
+        }
+      >
         <Card.Body onDoubleClick={() => setModal(true)}>
           <Card.Title>
             {Object.entries(props.data).map(([name, c]) => {
@@ -26,11 +32,13 @@ export default function PartCard(props) {
                   className={
                     (c.editable ? "Editable" : "notEditable") +
                     " " +
-                    name.toString()
+                    name.toString() +
+                    " " +
+                    c.edit_type
                   }
                 >
                   <span className="caption">{c.caption}:</span>{" "}
-                  <span className="value">
+                  <span className={"value " + c.edit_type}>
                     {c.edit_type != "select_yesno"
                       ? c.value
                       : c.value == null
@@ -51,11 +59,13 @@ export default function PartCard(props) {
                   className={
                     (c.editable ? "Editable" : "notEditable") +
                     " " +
-                    name.toString()
+                    name.toString() +
+                    " " +
+                    c.edit_type
                   }
                 >
                   <span className="caption">{c.caption}:</span>{" "}
-                  <span className="value">
+                  <span className={"value " + c.edit_type}>
                     {c.edit_type != "select_yesno"
                       ? c.value
                       : c.value == null

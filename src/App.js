@@ -60,7 +60,7 @@ export default function App() {
             Logged in as {loginToken.firstname} {loginToken.lastname}.{" "}
             <Button
               size="sm"
-              variant="secondary"
+              variant="outline-secondary"
               onClick={() => {
                 googleLogout();
                 setLoginToken(null);

@@ -6,11 +6,19 @@
   width: 18em;
   min-width: 18em;
   min-height: 3em;
-  max-height: 12em;
+  max-height: 15em;
   overflow: hidden;
-  padding: 0.2em;
+  padding: 0.1em;
   background: rgb(230, 230, 230);
   text-align: left;
+}
+
+.Card.wilted {
+  background: rgb(212, 167, 1);
+}
+
+.Card.brand_new {
+  background: rgb(255, 197, 197);
 }
 
 .Card div.Editable {
@@ -29,6 +37,16 @@
   font-size: 80%;
 }
 
+div.textarea {
+  max-height: 2em;
+  overflow: hidden;
+}
+
+div.string {
+  max-height: 1.5em;
+  overflow: hidden;
+}
+
 .Card div.notEditable.firstname {
   font-size: 110%;
   font-weight: bold;
@@ -38,7 +56,9 @@
   font-size: 110%;
   font-weight: bold;
 }
-
+.Card div.email {
+  max-height: 3em;
+}
 .Card div.notEditable span.caption {
   display: none;
 }
@@ -75,6 +95,11 @@ div.Pipeline span.cardCount {
   vertical-align: super;
   font-size: 70%;
 }
+
+div.Pipeline span.cardCount.newCards {
+  color: rgb(255, 118, 118);
+}
+
 div.Columns {
   display: flex;
   min-width: 100vw;
