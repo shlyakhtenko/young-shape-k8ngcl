@@ -1,10 +1,55 @@
 import Button from "react-bootstrap/Button";
+import LocalField from "./LocalField";
 
 function Datacolumn(props) {
   // const [data, setData] = useState(props.column_data);
   const siblings = props.siblings;
   const setter = props.setter;
   const data = props.column_data;
+
+  const save_name = (j, fieldName) => {
+    props.setter(
+      props.siblings.map((s) => {
+        s.name == data.name
+          ? {
+              ...s,
+              localfields: s.localfields.map((lf) => {
+                if (lf.id == j) {
+                  return {
+                    ...lf,
+                    type: fieldName,
+                  };
+                } else {
+                  return lf;
+                }
+              }),
+            }
+          : s;
+      }),
+    );
+  };
+
+  const save_type = (j, fieldType) => {
+    props.setter(
+      props.siblings.map((s) => {
+        s.name == data.name
+          ? {
+              ...s,
+              localfields: s.localfields.map((lf) => {
+                if (lf.id == j) {
+                  return {
+                    ...lf,
+                    type: fieldType,
+                  };
+                } else {
+                  return lf;
+                }
+              }),
+            }
+          : s;
+      }),
+    );
+  };
 
   return (
     <div className="column">
@@ -127,6 +172,125 @@ function Datacolumn(props) {
                 </tr>
               );
             })}
+            <>
+              {props.localfields ? (
+                <>
+                  <tr>
+                    <th colSpan={3}>Local Fields (not saved to PITS)</th>
+                  </tr>
+                  <tr>
+                    <th>Field</th>
+
+                    <th>Field Type</th>
+                    <th></th>
+                  </tr>
+                  {props.localfields.map((f, j) => (
+                    <tr key={f.name}>
+                      <td>
+                        <input
+                          value={f.name}
+                          onChange={(e) => {
+                            save_name(j, e.target.value);
+                          }}
+                        ></input>
+                      </td>
+                      <td>
+                        <select
+                          value={f.type}
+                          onChange={(e) => save_type(j, e.target.value)}
+                        >
+                          <option value="string">Short text or Number</option>
+                          <option value="textarea">Long text</option>
+                          <option value="select_yesno">Yes/No</option>
+                        </select>
+                      </td>
+                      <td>
+                        <Button
+                          variant="warning"
+                          size="sm"
+                          onClick={() => {
+                            props.setter(
+                              props.siblings.map((s) => {
+                                s.name == data.name
+                                  ? {
+                                      ...s,
+                                      localfields: [
+                                        s.localfields.filter(
+                                          (lf) => lf.name != f.name,
+                                        ),
+                                      ],
+                                    }
+                                  : s;
+                              }),
+                            );
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                  <tr>
+                    <td colSpan={3}>
+                      <Button
+                        onClick={() => {
+                          console.log("add field", "siblings", props.siblings);
+                          let newsibligns = props.siblings.map((s) => {
+                            s.name == data.name
+                              ? {
+                                  ...s,
+                                  localfields: [
+                                    ...(s.localfields ? s.localfields : []),
+                                    {
+                                      caption: "new_field",
+                                      type: "string",
+                                      name:
+                                        "local_field" +
+                                        (props.localfields
+                                          ? props.localfields.length
+                                          : 0),
+                                      editable: true,
+                                      edit: true,
+                                    },
+                                  ],
+                                }
+                              : s;
+                          });
+                          console.log(
+                            "siblings",
+                            props.siblings,
+                            "newsibligs",
+                            newsibligns,
+                          );
+                          props.setter(
+                            props.siblings.map((s) => {
+                              s.name == data.name
+                                ? {
+                                    ...s,
+                                    localfields: [
+                                      ...s.localfields,
+                                      {
+                                        caption: "new_field",
+                                        type: "string",
+                                        name:
+                                          "local_field" + s.localfields.length,
+                                        editable: true,
+                                        edit: true,
+                                      },
+                                    ],
+                                  }
+                                : s;
+                            }),
+                          );
+                        }}
+                      >
+                        Add Field
+                      </Button>
+                    </td>
+                  </tr>
+                </>
+              ) : null}
+            </>
           </tbody>
         </table>
         {props.remove_button ? (

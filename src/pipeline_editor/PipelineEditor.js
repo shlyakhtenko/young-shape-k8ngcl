@@ -87,6 +87,7 @@ export default function PipelineEditor(props) {
               data_source: data.data_sources[0].name,
               query: data.data_sources[0].available_queries[0].name,
               inputs: compute_inputs(data.data_sources[0].available_queries[0]),
+              localfields: data.localfields ? data.localfields : [],
             };
           }
 
@@ -300,6 +301,9 @@ export default function PipelineEditor(props) {
                   <div className="columnset">
                     <Datacolumn
                       column_data={inputs[0]}
+                      localfields={
+                        inputs[0].localfields ? inputs[0].localfields : []
+                      }
                       siblings={inputs}
                       setter={setInputs}
                       key="inputs"
@@ -362,6 +366,7 @@ export default function PipelineEditor(props) {
                 inputs: inputs,
                 wips: wips,
                 outputs: outputs,
+                localfields: pipeline_data.localfields,
               };
               const headers = {
                 //  authorization: "Basic " + token,
