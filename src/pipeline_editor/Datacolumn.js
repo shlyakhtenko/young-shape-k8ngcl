@@ -10,14 +10,14 @@ function Datacolumn(props) {
   const save_name = (j, fieldName) => {
     props.setter(
       props.siblings.map((s) => {
-        s.name == data.name
+        return s.name == data.name
           ? {
               ...s,
-              localfields: s.localfields.map((lf) => {
+              localfields: props.localfields.map((lf) => {
                 if (lf.id == j) {
                   return {
                     ...lf,
-                    type: fieldName,
+                    caption: fieldName,
                   };
                 } else {
                   return lf;
@@ -32,10 +32,10 @@ function Datacolumn(props) {
   const save_type = (j, fieldType) => {
     props.setter(
       props.siblings.map((s) => {
-        s.name == data.name
+        return s.name == data.name
           ? {
               ...s,
-              localfields: s.localfields.map((lf) => {
+              localfields: props.localfields.map((lf) => {
                 if (lf.id == j) {
                   return {
                     ...lf,
@@ -188,7 +188,7 @@ function Datacolumn(props) {
                     <tr key={f.name}>
                       <td>
                         <input
-                          value={f.name}
+                          value={f.caption}
                           onChange={(e) => {
                             save_name(j, e.target.value);
                           }}
@@ -211,7 +211,7 @@ function Datacolumn(props) {
                           onClick={() => {
                             props.setter(
                               props.siblings.map((s) => {
-                                s.name == data.name
+                                return s.name == data.name
                                   ? {
                                       ...s,
                                       localfields: [
@@ -234,15 +234,21 @@ function Datacolumn(props) {
                     <td colSpan={3}>
                       <Button
                         onClick={() => {
-                          console.log("add field", "siblings", props.siblings);
+                          console.log(
+                            "add field",
+                            "siblings",
+                            props.siblings,
+                            "column name",
+                            data.name,
+                          );
                           let newsibligns = props.siblings.map((s) => {
-                            s.name == data.name
+                            return s.name == data.name
                               ? {
                                   ...s,
                                   localfields: [
                                     ...(s.localfields ? s.localfields : []),
                                     {
-                                      caption: "new_field",
+                                      caption: "New Field",
                                       type: "string",
                                       name:
                                         "local_field" +
@@ -264,16 +270,17 @@ function Datacolumn(props) {
                           );
                           props.setter(
                             props.siblings.map((s) => {
-                              s.name == data.name
+                              return s.name == data.name
                                 ? {
                                     ...s,
                                     localfields: [
-                                      ...s.localfields,
+                                      ...props.localfields,
                                       {
-                                        caption: "new_field",
+                                        caption: "New Field",
                                         type: "string",
                                         name:
-                                          "local_field" + s.localfields.length,
+                                          "local_field" +
+                                          (props.localfields.length + 1),
                                         editable: true,
                                         edit: true,
                                       },
