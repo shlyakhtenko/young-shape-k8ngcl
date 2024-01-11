@@ -4,6 +4,7 @@ import Assignments from "./assignments/Assignment.js";
 import Pipeline from "./pipelines/Pipeline.js";
 import { useState, createContext } from "react";
 import { Routes, Route } from "react-router-dom";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Login from "./Login.js";
 import PipelineList from "./pipeline_list/Pipeline_list.js";
@@ -80,12 +81,13 @@ export default function App() {
               path="/pipeline_manager/edit/:pipelineName"
               element={<PipelineEditor />}
             />
-            <Route path="/" element={<Assignments />} />
+
             <Route path="/workshop/:programCode/" element={<PipelineList />} />
             <Route
               path="/workshop/:programCode/:pipelineName"
               element={<Pipeline />}
             />
+            <Route path="*" element={<Assignments />} />
           </Routes>
         </LoginContext.Provider>
       )}
