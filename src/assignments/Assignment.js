@@ -74,7 +74,7 @@ export default function Assignments() {
               ></Select>
               <Button
                 disabled={programCode == null ? true : false}
-                href={"/workshop/" + programCode}
+                href={"/malebolge/workshop/" + programCode}
               >
                 See Pipelines
               </Button>
@@ -94,11 +94,11 @@ export default function Assignments() {
               ></Select>
               <Button
                 disabled={pipeline == null ? true : false}
-                href={"/pipeline_manager/edit/" + pipeline}
+                href={"/malebolge/pipeline_manager/edit/" + pipeline}
               >
                 Edit Pipeline
               </Button>{" "}
-              <Button variant="success" href="pipeline_manager/new/">
+              <Button variant="success" href="/malebolge/pipeline_manager/new/">
                 New Pipeline
               </Button>
             </ListGroup.Item>

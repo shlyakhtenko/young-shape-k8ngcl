@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/malebolge/static/css/main.d412f718.css",
+    "main.js": "/malebolge/static/js/main.5e7da04d.js",
+    "index.html": "/malebolge/index.html",
+    "main.d412f718.css.map": "/malebolge/static/css/main.d412f718.css.map",
+    "main.5e7da04d.js.map": "/malebolge/static/js/main.5e7da04d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d412f718.css",
+    "static/js/main.5e7da04d.js"
+  ]
+}

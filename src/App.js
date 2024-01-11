@@ -74,17 +74,20 @@ export default function App() {
 
           <Routes>
             <Route
-              path="pipeline_manager/new"
+              path="/malebolge/pipeline_manager/new"
               element={<PipelineEditor pipeline={"new"} />}
             />
             <Route
-              path="pipeline_manager/edit/:pipelineName"
+              path="/malebolge/pipeline_manager/edit/:pipelineName"
               element={<PipelineEditor />}
             />
 
-            <Route path="workshop/:programCode/" element={<PipelineList />} />
             <Route
-              path="workshop/:programCode/:pipelineName"
+              path="/malebolge/workshop/:programCode/"
+              element={<PipelineList />}
+            />
+            <Route
+              path="/malebolge/workshop/:programCode/:pipelineName"
               element={<Pipeline />}
             />
             <Route path="*" element={<Assignments />} />

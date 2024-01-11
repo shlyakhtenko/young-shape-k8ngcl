@@ -61,7 +61,7 @@ export default function PipelineList() {
       <div className="top_bar">
         <nav>
           <Breadcrumb className="Breadcrumb">
-            <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+            <Breadcrumb.Item href="/malebolge/">Home</Breadcrumb.Item>
             <Breadcrumb.Item active>{program_code}</Breadcrumb.Item>
           </Breadcrumb>
         </nav>
@@ -74,7 +74,14 @@ export default function PipelineList() {
             {pipelines.map((pipeline) => {
               return (
                 <ListGroup.Item key={pipeline.name}>
-                  <a href={"/workshop/" + program_code + "/" + pipeline.name}>
+                  <a
+                    href={
+                      "/malebolge/workshop/" +
+                      program_code +
+                      "/" +
+                      pipeline.name
+                    }
+                  >
                     {pipeline.caption}
                   </a>
                   {" -- "}

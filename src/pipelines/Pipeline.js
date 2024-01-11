@@ -91,7 +91,7 @@ export default function Pipeline() {
       <div className="top_bar">
         <Breadcrumb className="Breadcrumb">
           <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-          <Breadcrumb.Item href={"/workshop/" + params.programCode}>
+          <Breadcrumb.Item href={"/malebolge/workshop/" + params.programCode}>
             {params.programCode}
           </Breadcrumb.Item>
           <Breadcrumb.Item active>{pipelineCaption}</Breadcrumb.Item>

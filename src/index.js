@@ -11,8 +11,8 @@ const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <BrowserRouter basename="malebolge/">
+    <BrowserRouter >
       <App />
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );
