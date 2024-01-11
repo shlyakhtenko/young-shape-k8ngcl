@@ -161,7 +161,7 @@ export default function PipelineEditor(props) {
     <div className="App">
       <nav>
         <Breadcrumb className="Breadcrumb">
-          <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+          <Breadcrumb.Item href="/malebolge/">Home</Breadcrumb.Item>
           <Breadcrumb.Item active>Editing pipeline: {pipeline}</Breadcrumb.Item>
         </Breadcrumb>
       </nav>
