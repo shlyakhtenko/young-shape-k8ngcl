@@ -8,22 +8,23 @@ function Datacolumn(props) {
   const data = props.column_data;
   const [numLocFields, setNumLocFields] = useState(0);
 
+  const delete_field = (fieldName, fieldSet) => {
+    delete fieldSet[fieldName];
+    return fieldSet;
+  };
   const save_caption = (fieldName, fieldCaption) => {
     props.setter(
       props.siblings.map((s) => {
         return s.name == data.name
           ? {
               ...s,
-              local_fields: props.local_fields.map((lf) => {
-                if (lf.name == fieldName) {
-                  return {
-                    ...lf,
-                    caption: fieldCaption,
-                  };
-                } else {
-                  return lf;
-                }
-              }),
+              local_fields: {
+                ...s.local_fields,
+                [fieldName]: {
+                  ...s.local_fields[fieldName],
+                  caption: fieldCaption,
+                },
+              },
             }
           : s;
       }),
@@ -36,16 +37,13 @@ function Datacolumn(props) {
         return s.name == data.name
           ? {
               ...s,
-              local_fields: props.local_fields.map((lf) => {
-                if (lf.name == fieldName) {
-                  return {
-                    ...lf,
-                    type: fieldType,
-                  };
-                } else {
-                  return lf;
-                }
-              }),
+              local_fields: {
+                ...s.local_fields,
+                [fieldName]: {
+                  ...s.local_fields[fieldName],
+                  edit_type: fieldType,
+                },
+              },
             }
           : s;
       }),
@@ -185,11 +183,12 @@ function Datacolumn(props) {
                     <th>Field Type</th>
                     <th></th>
                   </tr>
-                  {props.local_fields.map((f) => (
-                    <tr key={f.name}>
+                  {Object.entries(props.local_fields).map(([n, f]) => (
+                    <tr key={n}>
                       <td>
                         <input
                           value={f.caption}
+                          className="local_field_input"
                           placeholder="Field Name"
                           onChange={(e) => {
                             save_caption(f.name, e.target.value);
@@ -198,7 +197,7 @@ function Datacolumn(props) {
                       </td>
                       <td>
                         <select
-                          value={f.type}
+                          value={f.edit_type}
                           onChange={(e) => save_type(f.name, e.target.value)}
                         >
                           <option value="string">Short text or Number</option>
@@ -213,18 +212,12 @@ function Datacolumn(props) {
                           onClick={() => {
                             props.setter(
                               props.siblings.map((s) => {
-                                console.log(
-                                  "will set local_fields to ",
-                                  s.local_fields.filter(
-                                    (lf) => lf.name != f.name,
-                                  ),
-                                );
-
                                 return s.name == data.name
                                   ? {
                                       ...s,
-                                      local_fields: s.local_fields.filter(
-                                        (lf) => lf.name != f.name,
+                                      local_fields: delete_field(
+                                        f.name,
+                                        s.local_fields,
                                       ),
                                     }
                                   : s;
@@ -243,6 +236,8 @@ function Datacolumn(props) {
                         onClick={() => {
                           console.log(
                             "add field",
+                            "local_fields",
+                            props.local_fields,
                             "siblings",
                             props.siblings,
                             "column name",
@@ -252,16 +247,16 @@ function Datacolumn(props) {
                             return s.name == data.name
                               ? {
                                   ...s,
-                                  local_fields: [
-                                    ...(s.local_fields ? s.local_fields : []),
-                                    {
+                                  local_fields: {
+                                    ...s.local_fields,
+                                    ["local_field" + numLocFields]: {
                                       caption: "",
-                                      type: "string",
+                                      edit_type: "string",
                                       name: "local_field" + numLocFields,
                                       editable: true,
                                       edit: true,
                                     },
-                                  ],
+                                  },
                                 }
                               : s;
                           });
@@ -277,16 +272,23 @@ function Datacolumn(props) {
                               return s.name == data.name
                                 ? {
                                     ...s,
-                                    local_fields: [
-                                      ...props.local_fields,
-                                      {
+                                    local_fields: {
+                                      ...s.local_fields,
+                                      ["local_field" +
+                                      numLocFields +
+                                      Object.entries(props.local_fields)
+                                        .length]: {
                                         caption: "",
                                         type: "string",
-                                        name: "local_field" + numLocFields,
+                                        name:
+                                          "local_field" +
+                                          numLocFields +
+                                          Object.entries(props.local_fields)
+                                            .length,
                                         editable: true,
                                         edit: true,
                                       },
-                                    ],
+                                    },
                                   }
                                 : s;
                             }),

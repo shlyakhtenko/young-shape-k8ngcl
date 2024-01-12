@@ -95,6 +95,10 @@
   width: 6em;
   margin-left: 0.5em;
 }
+.App div.columnset input.local_field_input {
+  width: 10em;
+}
+
 .App input {
 }
 
