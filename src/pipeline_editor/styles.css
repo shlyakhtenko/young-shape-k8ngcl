@@ -90,6 +90,19 @@
   padding: 2px;
 }
 
+.App div.columnset table th.break {
+  padding-top: 1.5em;
+}
+.App div.columnset table th.local_fields {
+  border-top: 1px solid black;
+
+  padding-top: 1.7em;
+}
+
+.App div.columnset table td.local_fields_add_button {
+  text-align: center;
+}
+
 .App div.columnset label input {
   font-size: 100%;
   width: 6em;

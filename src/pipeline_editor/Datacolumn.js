@@ -175,8 +175,16 @@ function Datacolumn(props) {
               {props.local_fields ? (
                 <>
                   <tr>
-                    <th colSpan={3}>Local Fields (not saved to PITS)</th>
+                    <th className="break" colSpan={3}></th>
                   </tr>
+                  <tr>
+                    <th colSpan={3} className="local_fields">
+                      <h5>
+                        <b>Pipeline-only fields (not saved to PITS)</b>
+                      </h5>
+                    </th>
+                  </tr>
+
                   <tr>
                     <th>Field</th>
 
@@ -231,7 +239,7 @@ function Datacolumn(props) {
                     </tr>
                   ))}
                   <tr>
-                    <td colSpan={3}>
+                    <td colSpan={3} className="local_fields_add_button">
                       <Button
                         onClick={() => {
                           console.log(
