@@ -303,7 +303,11 @@ export default function PipelineEditor(props) {
                     <Datacolumn
                       column_data={inputs[0]}
                       local_fields={
-                        inputs[0].local_fields ? inputs[0].local_fields : []
+                        inputs[0].local_fields
+                          ? Object.entries(inputs[0].local_fields).map(
+                              ([, v]) => v,
+                            )
+                          : []
                       }
                       siblings={inputs}
                       setter={setInputs}
