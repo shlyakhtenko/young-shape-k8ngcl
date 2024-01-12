@@ -1,23 +1,24 @@
 import Button from "react-bootstrap/Button";
-import LocalField from "./LocalField";
+import { useState } from "react";
 
 function Datacolumn(props) {
   // const [data, setData] = useState(props.column_data);
   const siblings = props.siblings;
   const setter = props.setter;
   const data = props.column_data;
+  const [numLocFields, setNumLocFields] = useState(0);
 
-  const save_name = (j, fieldName) => {
+  const save_caption = (fieldName, fieldCaption) => {
     props.setter(
       props.siblings.map((s) => {
         return s.name == data.name
           ? {
               ...s,
-              localfields: props.localfields.map((lf) => {
-                if (lf.id == j) {
+              local_fields: props.local_fields.map((lf) => {
+                if (lf.name == fieldName) {
                   return {
                     ...lf,
-                    caption: fieldName,
+                    caption: fieldCaption,
                   };
                 } else {
                   return lf;
@@ -29,14 +30,14 @@ function Datacolumn(props) {
     );
   };
 
-  const save_type = (j, fieldType) => {
+  const save_type = (fieldName, fieldType) => {
     props.setter(
       props.siblings.map((s) => {
         return s.name == data.name
           ? {
               ...s,
-              localfields: props.localfields.map((lf) => {
-                if (lf.id == j) {
+              local_fields: props.local_fields.map((lf) => {
+                if (lf.name == fieldName) {
                   return {
                     ...lf,
                     type: fieldType,
@@ -173,7 +174,7 @@ function Datacolumn(props) {
               );
             })}
             <>
-              {props.localfields ? (
+              {props.local_fields ? (
                 <>
                   <tr>
                     <th colSpan={3}>Local Fields (not saved to PITS)</th>
@@ -184,20 +185,21 @@ function Datacolumn(props) {
                     <th>Field Type</th>
                     <th></th>
                   </tr>
-                  {props.localfields.map((f, j) => (
+                  {props.local_fields.map((f) => (
                     <tr key={f.name}>
                       <td>
                         <input
                           value={f.caption}
+                          placeholder="Field Name"
                           onChange={(e) => {
-                            save_name(j, e.target.value);
+                            save_caption(f.name, e.target.value);
                           }}
                         ></input>
                       </td>
                       <td>
                         <select
                           value={f.type}
-                          onChange={(e) => save_type(j, e.target.value)}
+                          onChange={(e) => save_type(f.name, e.target.value)}
                         >
                           <option value="string">Short text or Number</option>
                           <option value="textarea">Long text</option>
@@ -211,14 +213,19 @@ function Datacolumn(props) {
                           onClick={() => {
                             props.setter(
                               props.siblings.map((s) => {
+                                console.log(
+                                  "will set local_fields to ",
+                                  s.local_fields.filter(
+                                    (lf) => lf.name != f.name,
+                                  ),
+                                );
+
                                 return s.name == data.name
                                   ? {
                                       ...s,
-                                      localfields: [
-                                        s.localfields.filter(
-                                          (lf) => lf.name != f.name,
-                                        ),
-                                      ],
+                                      local_fields: s.local_fields.filter(
+                                        (lf) => lf.name != f.name,
+                                      ),
                                     }
                                   : s;
                               }),
@@ -245,16 +252,12 @@ function Datacolumn(props) {
                             return s.name == data.name
                               ? {
                                   ...s,
-                                  localfields: [
-                                    ...(s.localfields ? s.localfields : []),
+                                  local_fields: [
+                                    ...(s.local_fields ? s.local_fields : []),
                                     {
-                                      caption: "New Field",
+                                      caption: "",
                                       type: "string",
-                                      name:
-                                        "local_field" +
-                                        (props.localfields
-                                          ? props.localfields.length
-                                          : 0),
+                                      name: "local_field" + numLocFields,
                                       editable: true,
                                       edit: true,
                                     },
@@ -262,6 +265,7 @@ function Datacolumn(props) {
                                 }
                               : s;
                           });
+                          setNumLocFields((n) => n + 1);
                           console.log(
                             "siblings",
                             props.siblings,
@@ -273,14 +277,12 @@ function Datacolumn(props) {
                               return s.name == data.name
                                 ? {
                                     ...s,
-                                    localfields: [
-                                      ...props.localfields,
+                                    local_fields: [
+                                      ...props.local_fields,
                                       {
-                                        caption: "New Field",
+                                        caption: "",
                                         type: "string",
-                                        name:
-                                          "local_field" +
-                                          (props.localfields.length + 1),
+                                        name: "local_field" + numLocFields,
                                         editable: true,
                                         edit: true,
                                       },
