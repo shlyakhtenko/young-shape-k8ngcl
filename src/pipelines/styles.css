@@ -6,7 +6,7 @@
   width: 18em;
   min-width: 18em;
   min-height: 3em;
-  max-height: 15em;
+  max-height: 25em;
   overflow: hidden;
   padding: 0.1em;
   background: rgb(230, 230, 230);
@@ -24,7 +24,7 @@
 .Card div.Editable {
   font-weight: normal;
   font-size: 80%;
-  margin-top: 0.5em;
+  margin-top: 0em;
 }
 
 .Card div.Editable span.caption {
@@ -38,7 +38,7 @@
 }
 
 div.textarea {
-  max-height: 2em;
+  max-height: 4em;
   overflow: hidden;
 }
 
@@ -63,8 +63,10 @@ div.string {
   display: none;
 }
 
+.Card div.card-title {
+  margin-bottom: 0em;
+}
 .Card div.card-body div.card-body {
-  border-top: 1px solid lightgrey;
   padding: 0em;
   font-size: 105%;
 }
