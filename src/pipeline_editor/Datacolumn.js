@@ -6,7 +6,9 @@ function Datacolumn(props) {
   const siblings = props.siblings;
   const setter = props.setter;
   const data = props.column_data;
-  const [numLocFields, setNumLocFields] = useState(0);
+  const [numLocFields, setNumLocFields] = useState(
+    Object(props.local_fields).keys.length,
+  );
 
   const delete_field = (fieldName, fieldSet) => {
     delete fieldSet[fieldName];
