@@ -70,12 +70,13 @@ export default function PipelineEditor(props) {
           let new_pipeline_data = null;
           if (props.pipeline != "new") {
             new_pipeline_data = data.pipelines.find(
-              (p) => p.name == target_pipeline,
+              (x) => x.name == target_pipeline,
             );
+
             console.log(
               "pipeine editor: new_pipeline_data",
               new_pipeline_data,
-              "data.piplines",
+              "data.pipelines",
               data.pipelines,
               "looking for ",
               target_pipeline,
