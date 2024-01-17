@@ -1,13 +1,18 @@
 import "./styles.css";
-import PipelineEditor from "./pipeline_editor/PipelineEditor.js";
+//import PipelineEditor from "./pipeline_editor/PipelineEditor.js";
 import Assignments from "./assignments/Assignment.js";
 import Pipeline from "./pipelines/Pipeline.js";
-import { useState, createContext } from "react";
+import { useState, createContext, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+
+const PipelineList = lazy(() => import("./pipeline_list/Pipeline_list.js"));
+const PipelineEditor = lazy(
+  () => import("./pipeline_editor/PipelineEditor.js"),
+);
 
 import "bootstrap/dist/css/bootstrap.min.css";
 //import Login from "./Login.js";
-import PipelineList from "./pipeline_list/Pipeline_list.js";
+// import PipelineList from "./pipeline_list/Pipeline_list.js";
 import {
   GoogleOAuthProvider,
   GoogleLogin,
@@ -72,26 +77,28 @@ export default function App() {
             </Button>
           </div>
 
-          <Routes>
-            <Route
-              path="/malebolge/pipeline_manager/new"
-              element={<PipelineEditor pipeline={"new"} />}
-            />
-            <Route
-              path="/malebolge/pipeline_manager/edit/:pipelineName"
-              element={<PipelineEditor />}
-            />
+          <Suspense>
+            <Routes>
+              <Route
+                path="/malebolge/pipeline_manager/new"
+                element={<PipelineEditor pipeline={"new"} />}
+              />
+              <Route
+                path="/malebolge/pipeline_manager/edit/:pipelineName"
+                element={<PipelineEditor />}
+              />
 
-            <Route
-              path="/malebolge/workshop/:programCode/"
-              element={<PipelineList />}
-            />
-            <Route
-              path="/malebolge/workshop/:programCode/:pipelineName"
-              element={<Pipeline />}
-            />
-            <Route path="*" element={<Assignments />} />
-          </Routes>
+              <Route
+                path="/malebolge/workshop/:programCode/"
+                element={<PipelineList />}
+              />
+              <Route
+                path="/malebolge/workshop/:programCode/:pipelineName"
+                element={<Pipeline />}
+              />
+              <Route path="*" element={<Assignments />} />
+            </Routes>
+          </Suspense>
         </LoginContext.Provider>
       )}
     </GoogleOAuthProvider>
