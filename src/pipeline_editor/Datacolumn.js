@@ -89,7 +89,9 @@ function Datacolumn(props) {
               <th>Field</th>
               {props.use_field ? <th>Display?</th> : ""}
               {props.edit_field ? <th>Edit?</th> : ""}
-              <th>Criteria</th>
+              {Array(numColumns).map((_, i) => {
+                return <th key={i}>{i == 1 ? "Criteria" : "...or..."}</th>;
+              })}
             </tr>
           </thead>
           <tbody>
