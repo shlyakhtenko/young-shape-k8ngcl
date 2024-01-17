@@ -1,4 +1,5 @@
 import Button from "react-bootstrap/Button";
+
 import { useState } from "react";
 
 function Datacolumn(props) {
@@ -9,6 +10,14 @@ function Datacolumn(props) {
   const [numLocFields, setNumLocFields] = useState(
     props.local_fields ? Object.keys(props.local_fields).length : 0,
   );
+
+  const numColumns =
+    3 +
+    Object.entries(data.fields)
+      .map(([, v]) => v.criteria.length)
+      .reduce((a, b) => Math.max(a, b), -Infinity);
+
+  console.log("numcolumns", numColumns);
 
   const delete_field = (fieldName, fieldSet) => {
     delete fieldSet[fieldName];
@@ -205,10 +214,10 @@ function Datacolumn(props) {
               {props.local_fields ? (
                 <>
                   <tr>
-                    <th className="break" colSpan={3}></th>
+                    <th className="break" colSpan={numColumns}></th>
                   </tr>
                   <tr>
-                    <th colSpan={3} className="local_fields">
+                    <th colSpan={numColumns} className="local_fields">
                       <h5>
                         <b>Pipeline-only fields (not saved to PITS)</b>
                       </h5>
@@ -269,7 +278,10 @@ function Datacolumn(props) {
                     </tr>
                   ))}
                   <tr>
-                    <td colSpan={3} className="local_fields_add_button">
+                    <td
+                      colSpan={numColumns}
+                      className="local_fields_add_button"
+                    >
                       <Button
                         onClick={() => {
                           console.log(

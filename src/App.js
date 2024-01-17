@@ -77,7 +77,7 @@ export default function App() {
             </Button>
           </div>
 
-          <Suspense>
+          <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route
                 path="/malebolge/pipeline_manager/new"
