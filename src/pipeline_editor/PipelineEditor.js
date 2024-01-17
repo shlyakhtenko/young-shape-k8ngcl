@@ -127,6 +127,7 @@ export default function PipelineEditor(props) {
                 )
               : [],
           );
+          setSubQuery(null);
           setInputs(new_pipeline_data.inputs);
           if (props.pipeline != "new") {
             setWIPS(new_pipeline_data.wips);
