@@ -145,31 +145,47 @@ function Datacolumn(props) {
                   ) : (
                     ""
                   )}
+                  {[...f.criteria, []].map((c, n) => {
+                    return (
+                      <td key={n}>
+                        <input
+                          onChange={(e) => {
+                            let newfields = null;
+                            if (n != Object.entries(data.fields).length) {
+                              newfields = Object.entries(data.fields).map(
+                                ([, d]) => {
+                                  return d.name == f.name
+                                    ? {
+                                        ...f,
+                                        criteria: f.criteria.map((cc, k) => {
+                                          return k != n
+                                            ? cc
+                                            : [{ op: e.target.value }];
+                                        }),
+                                      }
+                                    : d;
+                                },
+                              );
+                            } else {
+                              newfields = Object.entries(data.fields);
+                              newfields.push([{ op: e.target.value }]);
+                            }
 
-                  <td>
-                    <input
-                      key={data.name + "_" + f.name + "_criteria"}
-                      onChange={(e) => {
-                        let newfields = Object.entries(data.fields).map(
-                          ([, d]) => {
-                            return d.name == f.name
-                              ? { ...f, criteria: [[{ op: e.target.value }]] }
-                              : d;
-                          },
-                        );
-                        console.log(newfields);
-                        let newsiblings = siblings.map((s) => {
-                          return s.name == data.name
-                            ? { ...data, fields: newfields }
-                            : s;
-                        });
-                        console.log(newsiblings);
-                        setter(newsiblings);
-                      }}
-                      value={f.criteria[0][0] ? f.criteria[0][0].op : ""}
-                      // disabled={!f.editable}
-                    ></input>
-                  </td>
+                            console.log(newfields);
+                            let newsiblings = siblings.map((s) => {
+                              return s.name == data.name
+                                ? { ...data, fields: newfields }
+                                : s;
+                            });
+                            console.log(newsiblings);
+                            setter(newsiblings);
+                          }}
+                          value={c[0] ? c[0].op : ""}
+                          // disabled={!f.editable}
+                        ></input>
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             })}
