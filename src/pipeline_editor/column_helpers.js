@@ -12,7 +12,7 @@ export function compute_inputs(query) {
         primary_key: d.primary_key,
         edit_type: d.edit_type,
         edit: false,
-        criteria: [[]],
+        criteria: [],
         display_on_card: null,
         type: d.type,
       };
@@ -33,7 +33,7 @@ export function compute_wips(query, column_name, column_caption) {
         caption: d.caption,
         editable: d.editable,
         edit: false,
-        criteria: [[]],
+        criteria: [],
         type: d.type,
         display_on_card: true,
       };
@@ -70,7 +70,7 @@ export function compute_outputs(query, wips, column_name, column_caption) {
               caption: d.caption,
               editable: d.editable,
               edit: false,
-              criteria: [[]],
+              criteria: [],
               type: d.type,
               display_on_card: true,
             }

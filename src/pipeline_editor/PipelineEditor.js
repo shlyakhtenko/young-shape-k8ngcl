@@ -26,6 +26,8 @@ export default function PipelineEditor(props) {
 
   const [data_sources, set_data_sources] = useState([]);
   const [data_source, setDataSource] = useState(null);
+  const [sub_queries, SetSubQueries] = useState([]);
+  const [sub_query, setSubQuery] = useState(null);
 
   const [inputs, setInputs] = useState([]);
   const [query, setQuery] = useState({});
@@ -106,10 +108,24 @@ export default function PipelineEditor(props) {
               (x) => x.name == new_pipeline_data.inputs[0].query,
             ),
           );
+          console.log(
+            "subqueries",
+            new_data_source.available_queries[0],
+            new_data_source.available_queries[0].available_sub_queries,
+          );
           setSelectOptions(
             new_data_source.available_queries.map((q) => {
               return { value: q.name, label: q.caption };
             }),
+          );
+          SetSubQueries(
+            new_data_source.available_queries[0].available_sub_queries
+              ? new_data_source.available_queries[0].available_sub_queries.map(
+                  (q) => {
+                    return { value: q.name, label: q.caption };
+                  },
+                )
+              : [],
           );
           setInputs(new_pipeline_data.inputs);
           if (props.pipeline != "new") {
@@ -234,6 +250,21 @@ export default function PipelineEditor(props) {
                   })[0];
                   setQuery(newquery);
                   setInputs(compute_inputs(newquery));
+                  SetSubQueries(
+                    newquery.available_sub_queries
+                      ? newquery.available_sub_queries.map((q) => {
+                          return { value: q.name, label: q.caption };
+                        })
+                      : [],
+                  );
+                  console.log(
+                    "set subqueries",
+                    newquery.available_sub_queries
+                      ? newquery.available_sub_queries.map((q) => {
+                          return { value: q.name, label: q.caption };
+                        })
+                      : [],
+                  );
                   setWIPS([]);
                   setOutputs([
                     //compute_outputs(newquery, [], "output", "Output Column"),
@@ -244,6 +275,29 @@ export default function PipelineEditor(props) {
                 {selectOptions.map((q) => {
                   return (
                     <option key={q.value} value={q.value}>
+                      {q.label}
+                    </option>
+                  );
+                })}
+              </Form.Select>
+            </label>
+            <label>
+              Column:
+              <Form.Select
+                className="data_selector"
+                default_value=""
+                onChange={(e) => {
+                  let newSubQuery = sub_queries.filter(
+                    (qn) => qn.name == e.target.value,
+                  )[0];
+                  setSubQuery(newSubQuery);
+
+                  setOutputs([]);
+                }}
+              >
+                {sub_queries.map((q) => {
+                  return (
+                    <option key={q.name} value={q.value}>
                       {q.label}
                     </option>
                   );
@@ -363,6 +417,7 @@ export default function PipelineEditor(props) {
               let save_data = {
                 data_source: data_source.name,
                 query: query.name,
+                sub_query: sub_query.name,
                 name: pipelineName,
                 caption: pipeline,
                 inputs: inputs,

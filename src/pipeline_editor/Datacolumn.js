@@ -17,8 +17,6 @@ function Datacolumn(props) {
       .map(([, v]) => v.criteria.length)
       .reduce((a, b) => Math.max(a, b), -Infinity);
 
-  console.log("numcolumns", numColumns);
-
   const delete_field = (fieldName, fieldSet) => {
     delete fieldSet[fieldName];
     return fieldSet;
@@ -89,8 +87,10 @@ function Datacolumn(props) {
               <th>Field</th>
               {props.use_field ? <th>Display?</th> : ""}
               {props.edit_field ? <th>Edit?</th> : ""}
-              {Array(numColumns).map((_, i) => {
-                return <th key={i}>{i == 1 ? "Criteria" : "...or..."}</th>;
+
+              {Array.apply(null, new Array(numColumns - 2)).map((_, i) => {
+                console.log("i=", i);
+                return <th key={i}>{i == 0 ? "Criteria" : "...or..."}</th>;
               })}
             </tr>
           </thead>
@@ -254,7 +254,7 @@ function Datacolumn(props) {
                           <option value="select_yesno">Yes/No</option>
                         </select>
                       </td>
-                      <td>
+                      <td colSpan={numColumns - 2}>
                         <Button
                           variant="warning"
                           size="sm"
