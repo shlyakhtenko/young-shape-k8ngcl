@@ -151,7 +151,7 @@ function Datacolumn(props) {
                         <input
                           onChange={(e) => {
                             let newfields = null;
-                            if (n != Object.entries(data.fields).length) {
+                            if (n != Object.entries(f.criteria).length) {
                               newfields = Object.entries(data.fields).map(
                                 ([, d]) => {
                                   return d.name == f.name
@@ -167,11 +167,23 @@ function Datacolumn(props) {
                                 },
                               );
                             } else {
-                              newfields = Object.entries(data.fields);
-                              newfields.push([{ op: e.target.value }]);
+                              console.log("got new criteria");
+                              newfields = Object.entries(data.fields).map(
+                                ([, d]) => {
+                                  return {
+                                    ...d,
+                                    criteria: [
+                                      ...d.criteria,
+                                      d.name == f.name
+                                        ? [{ op: e.target.value }]
+                                        : "",
+                                    ],
+                                  };
+                                },
+                              );
                             }
 
-                            console.log(newfields);
+                            console.log("n=", n, newfields);
                             let newsiblings = siblings.map((s) => {
                               return s.name == data.name
                                 ? { ...data, fields: newfields }
