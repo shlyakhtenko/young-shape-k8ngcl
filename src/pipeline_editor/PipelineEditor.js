@@ -295,6 +295,7 @@ export default function PipelineEditor(props) {
                   setOutputs([]);
                 }}
               >
+                <option value={null}>Entire output</option>
                 {sub_queries.map((q) => {
                   return (
                     <option key={q.name} value={q.value}>
