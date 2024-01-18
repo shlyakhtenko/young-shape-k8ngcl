@@ -87,6 +87,7 @@ function Datacolumn(props) {
               <th>Field</th>
               {props.use_field ? <th>Display?</th> : ""}
               {props.edit_field ? <th>Edit?</th> : ""}
+              {console.log("numColumns=", numColumns)}
 
               {Array.apply(null, new Array(numColumns - 2)).map((_, i) => {
                 console.log("i=", i);
