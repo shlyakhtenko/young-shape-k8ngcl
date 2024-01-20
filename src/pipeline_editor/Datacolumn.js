@@ -15,7 +15,7 @@ function Datacolumn(props) {
     3 +
     Object.entries(data.fields)
       .map(([, v]) => v.criteria.length)
-      .reduce((a, b) => Math.max(a, b), -Infinity);
+      .reduce((a, b) => Math.max(a, b), 0);
 
   const delete_field = (fieldName, fieldSet) => {
     delete fieldSet[fieldName];
