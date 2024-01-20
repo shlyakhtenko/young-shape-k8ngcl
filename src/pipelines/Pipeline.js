@@ -8,6 +8,49 @@ import PartCard from "./Card";
 import { LoginContext } from "../App";
 import ErrorDialog from "../ErrorDialog";
 
+function verify(operator, value) {
+  let op = operator.trim();
+
+  if (operator.substring(0, 1) == "") return true;
+  if (operator.substring(0, 1) == "=") {
+    let val = operator.substring(1).trim();
+    if (val == "NULL") return value == null || value == "";
+
+    if (val == "TRUE" || val == "1") return value == true;
+    if (val == "FALSE" || val == "0") return value == false;
+    return value == val;
+  }
+  if (operator.substring(0, 1) == "!") {
+    let val = operator.substring(1).trim();
+    if (val.substring(0, 1) == "=") {
+      let val = val.substring(1).trim();
+      if (val == "NULL") return value != null && value != "";
+      if (val == "TRUE" || val == "1") return value != true;
+      if (val == "FALSE" || val == "0") return value != false;
+      return value != val;
+    }
+  }
+}
+
+function verify_card(card_data, column) {
+  let and_conditions = [];
+
+  const num_or_fields = Object.entries(card_data.fields)
+    .map(([, v]) => v.criteria.length)
+    .reduce((a, b) => Math.max(a, b), 0);
+
+  for (let i = 0; i < num_or_fields; i++) {
+    and_conditions.push(
+      Object.entries(card_data.fields)
+        .map(([_, f]) => {
+          return verify(column[f.name].criteria[i], f.value[i]);
+        })
+        .reduce((a, b) => a && b, true),
+    );
+  }
+  return and_conditions.reduce((a, b) => a || b, false);
+}
+
 export default function Pipeline() {
   let params = useParams();
   const loginToken = useContext(LoginContext);
@@ -179,6 +222,18 @@ export default function Pipeline() {
                   put: c.put,
                 }}
                 onEnd={(e) => {
+                  const card = column_cards.find((c) => c.card_id == e.item.id);
+                  const target_column = columns.find(
+                    (cc) => cc.name == e.to.id,
+                  );
+                  if (!verify_card(card, target_column)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert(
+                      "Card data does not fit column criteria. Update card first.",
+                    );
+                    return false;
+                  }
                   save_one_card(e.item.id, e.to.id, setSaveStatus);
                   setColumn_cards((l) =>
                     l.map((cc) => {
