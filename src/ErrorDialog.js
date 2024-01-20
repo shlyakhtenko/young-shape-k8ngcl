@@ -2,13 +2,16 @@ import { Modal, Button } from "react-bootstrap";
 
 export default function ErrorDialog(props) {
   return (
-    <div className="modal show">
-      <Modal show={props.show}>
+    <div className="modal show errorDialog">
+      <Modal
+        show={props.show}
+        size="sm"
+        centered
+        onHide={() => props.setter(false)}
+      >
         <Modal.Dialog>
-          <Modal.Header>
-            <Modal.Title>
-              <h1>Error</h1>
-            </Modal.Title>
+          <Modal.Header closeButton>
+            <Modal.Title>Error</Modal.Title>
           </Modal.Header>
           <Modal.Body>{props.message}</Modal.Body>
           <Modal.Footer>

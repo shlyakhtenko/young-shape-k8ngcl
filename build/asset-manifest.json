@@ -1,19 +1,23 @@
 {
   "files": {
-    "main.css": "/malebolge/static/css/main.80e45716.css",
-    "main.js": "/malebolge/static/js/main.3260e11b.js",
-    "static/js/867.932fe883.chunk.js": "/malebolge/static/js/867.932fe883.chunk.js",
+    "main.css": "/malebolge/static/css/main.9e0f6eae.css",
+    "main.js": "/malebolge/static/js/main.0026e46a.js",
+    "static/js/867.0e909d6b.chunk.js": "/malebolge/static/js/867.0e909d6b.chunk.js",
     "static/css/837.86c5d4ab.chunk.css": "/malebolge/static/css/837.86c5d4ab.chunk.css",
-    "static/js/837.fe699e2f.chunk.js": "/malebolge/static/js/837.fe699e2f.chunk.js",
+    "static/js/837.55ccf390.chunk.js": "/malebolge/static/js/837.55ccf390.chunk.js",
+    "static/js/987.29b41897.chunk.js": "/malebolge/static/js/987.29b41897.chunk.js",
+    "static/js/978.323860e3.chunk.js": "/malebolge/static/js/978.323860e3.chunk.js",
     "index.html": "/malebolge/index.html",
-    "main.80e45716.css.map": "/malebolge/static/css/main.80e45716.css.map",
-    "main.3260e11b.js.map": "/malebolge/static/js/main.3260e11b.js.map",
-    "867.932fe883.chunk.js.map": "/malebolge/static/js/867.932fe883.chunk.js.map",
+    "main.9e0f6eae.css.map": "/malebolge/static/css/main.9e0f6eae.css.map",
+    "main.0026e46a.js.map": "/malebolge/static/js/main.0026e46a.js.map",
+    "867.0e909d6b.chunk.js.map": "/malebolge/static/js/867.0e909d6b.chunk.js.map",
     "837.86c5d4ab.chunk.css.map": "/malebolge/static/css/837.86c5d4ab.chunk.css.map",
-    "837.fe699e2f.chunk.js.map": "/malebolge/static/js/837.fe699e2f.chunk.js.map"
+    "837.55ccf390.chunk.js.map": "/malebolge/static/js/837.55ccf390.chunk.js.map",
+    "987.29b41897.chunk.js.map": "/malebolge/static/js/987.29b41897.chunk.js.map",
+    "978.323860e3.chunk.js.map": "/malebolge/static/js/978.323860e3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.80e45716.css",
-    "static/js/main.3260e11b.js"
+    "static/css/main.9e0f6eae.css",
+    "static/js/main.0026e46a.js"
   ]
 }

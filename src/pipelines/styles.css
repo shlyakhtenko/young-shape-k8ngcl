@@ -17,6 +17,11 @@
   background: rgb(212, 167, 1);
 }
 
+.Card.criteria_not_satisfied {
+  background: rgb(117, 3, 3);
+  color: white;
+}
+
 .Card.brand_new {
   background: rgb(255, 197, 197);
 }
@@ -100,6 +105,20 @@ div.Pipeline span.cardCount {
 
 div.Pipeline span.cardCount.newCards {
   color: rgb(255, 118, 118);
+}
+
+div.ErrorMessage {
+  display: block;
+  position: absolute;
+  top: 1em;
+  left: 0em;
+  padding-left: 2em;
+  background-color: rgb(117, 3, 3);
+  color: yellow;
+  width: 100%;
+}
+div.ErrorMessage.hidden {
+  display: none;
 }
 
 div.Columns {

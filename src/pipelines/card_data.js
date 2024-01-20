@@ -5,9 +5,7 @@ export async function get_card_data(
   setter,
   raiseError,
 ) {
-  const headers = {
-    //authorization: "Basic " + token
-  };
+  const headers = {};
   const url =
     "https://docs.ipam.ucla.edu/cocytus/data_source.php?ipam_id=" +
     token.ipam_id +

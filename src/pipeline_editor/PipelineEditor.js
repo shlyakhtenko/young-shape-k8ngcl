@@ -419,7 +419,7 @@ export default function PipelineEditor(props) {
               let save_data = {
                 data_source: data_source.name,
                 query: query.name,
-                sub_query: sub_query.name,
+                sub_query: sub_query,
                 name: pipelineName,
                 caption: pipeline,
                 inputs: inputs,

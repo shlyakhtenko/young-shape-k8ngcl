@@ -20,7 +20,8 @@ export default function PartCard(props) {
         className={
           "Card" +
           (props.wilted ? " wilted" : "") +
-          (props.brand_new ? " brand_new" : "")
+          (props.brand_new ? " brand_new" : "") +
+          (props.criteria_satisfied ? "" : " criteria_not_satisfied ")
         }
       >
         <Card.Body onDoubleClick={() => setModal(true)}>
