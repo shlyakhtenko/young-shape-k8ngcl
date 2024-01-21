@@ -119,15 +119,17 @@ export default function PipelineEditor(props) {
             }),
           );
           SetSubQueries(
-            new_data_source.available_queries[0].available_sub_queries
-              ? new_data_source.available_queries[0].available_sub_queries.map(
-                  (q) => {
+            new_data_source.available_queries.find(
+              (x) => x.name == new_pipeline_data.inputs[0].query,
+            ).available_sub_queries
+              ? new_data_source.available_queries
+                  .find((x) => x.name == new_pipeline_data.inputs[0].query)
+                  .available_sub_queries.map((q) => {
                     return { value: q.name, label: q.caption };
-                  },
-                )
+                  })
               : [],
           );
-          setSubQuery(null);
+          setSubQuery(new_pipeline_data.sub_query);
           setInputs(new_pipeline_data.inputs);
           if (props.pipeline != "new") {
             setWIPS(new_pipeline_data.wips);
@@ -258,6 +260,7 @@ export default function PipelineEditor(props) {
                         })
                       : [],
                   );
+                  setSubQuery(null);
                   console.log(
                     "set subqueries",
                     newquery.available_sub_queries
@@ -283,23 +286,19 @@ export default function PipelineEditor(props) {
               </Form.Select>
             </label>
             <label>
-              Column:
+              Output:
               <Form.Select
                 className="data_selector"
                 default_value=""
+                value={sub_query}
                 onChange={(e) => {
-                  let newSubQuery = sub_queries.filter(
-                    (qn) => qn.name == e.target.value,
-                  )[0];
-                  setSubQuery(newSubQuery);
-
-                  setOutputs([]);
+                  setSubQuery(e.target.value);
                 }}
               >
                 <option value={null}>Entire output</option>
                 {sub_queries.map((q) => {
                   return (
-                    <option key={q.name} value={q.value}>
+                    <option key={q.value} value={q.value}>
                       {q.label}
                     </option>
                   );
@@ -420,6 +419,7 @@ export default function PipelineEditor(props) {
                 data_source: data_source.name,
                 query: query.name,
                 sub_query: sub_query,
+                sub_queries: sub_queries,
                 name: pipelineName,
                 caption: pipeline,
                 inputs: inputs,
@@ -454,7 +454,7 @@ export default function PipelineEditor(props) {
               }).then((response) => {
                 response.text().then((text) => {
                   //console.log("Saving pipline. Got response: " + text);
-                  alert("Saved. Got response: " + text);
+                  alert("Saved pipeline . Got response: " + text);
                 });
               });
               //console.log(JSON.stringify(save_data));

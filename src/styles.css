@@ -116,3 +116,12 @@ div.logout {
   margin-top: 0.4em;
   color: grey;
 }
+
+div.loading {
+  vertical-align: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 15em;
+  margin-top: 25vh;
+}

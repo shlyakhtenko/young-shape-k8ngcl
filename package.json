@@ -6,6 +6,7 @@
     "react",
     "starter"
   ],
+  "license": "MIT",
   "homepage": "/malebolge/",
   "main": "src/index.js",
   "dependencies": {

@@ -4,6 +4,7 @@ import Assignments from "./assignments/Assignment.js";
 import Pipeline from "./pipelines/Pipeline.js";
 import { useState, createContext, Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const PipelineList = lazy(() => import("./pipeline_list/Pipeline_list.js"));
 const PipelineEditor = lazy(
@@ -62,22 +63,29 @@ export default function App() {
         </div>
       ) : (
         <LoginContext.Provider value={loginToken}>
-          <div className="logout">
-            Logged in as {loginToken.firstname} {loginToken.lastname}.{" "}
-            <Button
-              size="sm"
-              variant="outline-secondary"
-              onClick={() => {
-                googleLogout();
-                setLoginToken(null);
-                sessionStorage.removeItem("loginToken");
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <div className="loading">
+                <Spinner animation="border" role="status" />
+                Loading...
+              </div>
+            }
+          >
+            {" "}
+            <div className="logout">
+              Logged in as {loginToken.firstname} {loginToken.lastname}.{" "}
+              <Button
+                size="sm"
+                variant="outline-secondary"
+                onClick={() => {
+                  googleLogout();
+                  setLoginToken(null);
+                  sessionStorage.removeItem("loginToken");
+                }}
+              >
+                Logout
+              </Button>
+            </div>
             <Routes>
               <Route
                 path="/malebolge/pipeline_manager/new"

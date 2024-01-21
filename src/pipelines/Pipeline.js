@@ -51,7 +51,7 @@ function verify_card_with_details(card_data, column) {
     and_conditions.push(
       Object.entries(card_data)
         .map(([_, f]) => {
-          if (column.fields[f.name] == null) return { val: true, reason: "" };
+          if (column.fields[f.name] == null || column.fields[f.name].criteria[i] ==null) return { val: true, reason: "" };
           let val = verify(column.fields[f.name].criteria[i][0], f.value);
 
           return {
@@ -98,6 +98,20 @@ function verify_card(card_data, column) {
       Object.entries(card_data)
         .map(([_, f]) => {
           if (column.fields[f.name] == null) return true;
+          if ( column.fields[f.name].criteria[i] ==null ) {
+            /*console.log(
+              "examinning f.name=",
+              f.name,
+              "criteria=",
+              column.fields[f.name].criteria,
+              "i=",
+              i,
+              "value = ",
+              f.value,
+            ); */
+            return true;
+          }
+          //console.log(column.fields[f.name].criteria[i])
           /* console.log(
             "examinning f.name=",
             f.name,
