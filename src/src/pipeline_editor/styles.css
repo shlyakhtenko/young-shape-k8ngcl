@@ -1,0 +1,141 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.App table.columntable {
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  border: none;
+}
+.App table.columntable th {
+  border: none;
+  padding: 2em;
+  border: 1px solid grey;
+}
+.App table.columntable td {
+  border: 1px solid grey;
+
+  padding: 1em;
+  vertical-align: top;
+}
+.App div.columnset {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: top;
+  height: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+.App div.columnset div.column {
+  padding: 0em;
+  padding-top: 1em;
+  margin-right: 0.3em;
+  margin-left: 0.3em;
+  background-color: rgb(230, 230, 230);
+  border: 2px solid black;
+  padding-bottom: 1em;
+}
+
+.App div.preamble {
+  margin-bottom: 2em;
+  display: block;
+  padding: 1.5em;
+}
+.App div.preamble label {
+  margin: 0.5em;
+  text-align: center;
+}
+.App label.pipelineName input {
+  margin-top: 4px;
+  margin-left: 0.5em;
+  display: inline-block;
+  background: white;
+  width: 15em;
+  padding: 6px;
+  font-weight: bold;
+  font-size: 100%;
+}
+.App div.preamble .data_selector {
+  margin-top: 2px;
+  margin-left: 0.5em;
+  width: 15em;
+  display: inline-block;
+}
+.App label {
+  font-size: 110%;
+  font-weight: bold;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.App div.columnset table {
+  border-collapse: collapse;
+  width: 100%;
+  padding: 0px;
+}
+
+.App div.columnset table td {
+  border: none;
+  text-align: left;
+  padding: 2px;
+  padding-left: 5px;
+}
+.App div.columnset table th {
+  border: none;
+  text-align: left;
+  padding: 2px;
+}
+
+.App div.columnset table th.break {
+  padding-top: 1.5em;
+}
+.App div.columnset table th.local_fields {
+  border-top: 1px solid black;
+
+  padding-top: 1.7em;
+}
+
+.App div.columnset table td.local_fields_add_button {
+  text-align: center;
+}
+
+.App div.columnset label input {
+  font-size: 100%;
+  width: 6em;
+  margin-left: 0.5em;
+}
+.App div.columnset input.local_field_input {
+  width: 10em;
+}
+
+.App input {
+}
+
+.App div.columnset table input {
+  width: 5em;
+  font-size: 80%;
+  background-color: white;
+}
+
+.App div.columnset table input[type="checkbox"] {
+  width: 1em;
+  outline: 1px solid black;
+}
+.App div.columnset table input[type="checkbox"][disabled] {
+  outline: 1px dashed grey;
+}
+
+.App table.fieldTable {
+  border-collapse: collapse;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border: none;
+}
+
+div.App > nav {
+  padding-bottom: 3em;
+}
